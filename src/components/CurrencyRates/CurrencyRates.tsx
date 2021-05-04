@@ -1,16 +1,24 @@
 import { Form, Table } from "react-bootstrap";
 
-const CurrencyRates = () => {
+type CurrencyRatesProps = {
+  options: any
+  items: any
+  base: string
+  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+}
+
+const CurrencyRates: React.FC<CurrencyRatesProps> = ({ options, items, base, handleSelectChange }) => {
+  // console.log(base)
   return (
     <>
       <Form>
         <Form.Group controlId="exampleForm.SelectCustom">
           <Form.Label>Выберите валюту</Form.Label>
           <Form.Control as="select"
+            value={base}
+            onChange={handleSelectChange}
             custom>
-            <option value='RUB'>RUB</option>
-            <option value='RUB'>RUB</option>
-            <option value='RUB'>RUB</option>
+            {options}
           </Form.Control>
         </Form.Group>
       </Form>
@@ -23,30 +31,7 @@ const CurrencyRates = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              JPY/RUB
-            </td>
-            <td>
-              <span>1.0325</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              JPY/RUB
-            </td>
-            <td>
-              <span>1.0325</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              JPY/RUB
-            </td>
-            <td>
-              <span>1.0325</span>
-            </td>
-          </tr>
+          {items}
         </tbody>
       </Table>
     </>

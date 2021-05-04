@@ -1,7 +1,8 @@
 import { combineReducers, createStore } from 'redux'
-import {converterReducer} from './reducers'
+import {converterReducer, currencyRatesReducer} from './reducers'
 
 const rootReducer = combineReducers({
+  currencyRatesReducer,
   converterReducer,
 })
 
