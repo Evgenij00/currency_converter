@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Container } from "react-bootstrap";
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+import Header from "./components/Header";
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import CurrencyRates from "./components/CurrencyRates";
+import Converter from "./components/Converter";
+import ArchiveRates from "./components/ArchiveRates";
+import AvailableCurrencies from "./components/AvialableCurrencies/AvialableCurrencies";
+
+class App extends Component {
+
+  render() {
+    return (
+      <BrowserRouter>
+      <Header />
+      <Container fluid='sm'>
+        <Switch>
+          <Route path='/' exact component={CurrencyRates} />
+          <Route path='/convert' component={Converter} />
+          <Route path='/course-archive' component={ArchiveRates} />
+          <Route path='/available-currencies' component={AvailableCurrencies} />
+        </Switch>
+      </Container>
+    </BrowserRouter>
+    );
+  }
 }
 
 export default App;
