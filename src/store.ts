@@ -10,8 +10,4 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer)
 
-// store.subscribe(() => {
-//   console.log('Store update!', store.getState())
-// })
-
 export default store

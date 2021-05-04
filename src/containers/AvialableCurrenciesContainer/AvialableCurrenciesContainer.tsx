@@ -1,11 +1,14 @@
 import { connect } from "react-redux";
-import React, { Component } from "react";
+import { Component } from "react";
+import { withCurrencyService } from "../../components/hoc";
+
 import { TFeatchAvialableRequest, TFetchAvialableError, TFetchAvialableSuccess } from "../../actions/types";
 import {avialableRequested, avialableLoaded, avialableError} from '../../actions'
-import { withCurrencyService } from "../../components/hoc";
 import { TAvialableReducer } from "../../reducers/avialable-reducer";
 import { ICurrencyService } from "../../services/currency-service";
+
 import AvialableCurrencies from '../../components/AvialableCurrencies'
+import Spinner from "../../components/spinner";
 
 type TDispatchProps = {
   avialableRequested: () => TFeatchAvialableRequest
@@ -23,6 +26,7 @@ class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContaine
 
   componentDidMount() {
     const {service, avialableRequested, avialableLoaded, avialableError} = this.props
+
     avialableRequested()
     service.getCurrencies()
       .then(currencies => avialableLoaded(currencies))
@@ -45,7 +49,7 @@ class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContaine
   render() {
     const {avialableCurrencies, loading, error} = this.props
 
-    if (loading) return <h1>Выполняем работу :)</h1>;
+    if (loading) return <Spinner />
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
     const items = avialableCurrencies.map(this.renderTabels)

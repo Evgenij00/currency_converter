@@ -1,20 +1,17 @@
 import { Table } from "react-bootstrap";
 
-import './AvialableCurrencies.css'
-
 type AvialableCurrenciesProps = {
   items: [string, string][]
 }
 
 const AvialableCurrencies: React.FC<AvialableCurrenciesProps> = ({items}) => {
-  // console.log(items)
   return (
-    <Table striped bordered hover size="sm">
-      <caption>Доступные валюты</caption>
+    <Table className='mt-3' striped bordered hover size="sm">
+      <caption>Доступные валюты. Данные обновляются каждый рабочий день около 16:00 по центральноевропейскому времени.</caption>
       <thead>
         <tr>
-          <th>Валюта</th>
-          <th>Покупка</th>
+          <th>Аббревиатура</th>
+          <th>Полное название</th>
         </tr>
       </thead>
       <tbody>

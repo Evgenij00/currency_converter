@@ -1,18 +1,21 @@
 import { connect } from "react-redux";
-import React, { Component } from "react";
-import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TConvertDate, TText } from "../../actions/types";
-import { TConverterReducer } from "../../reducers/converter-reducer";
-import { priceError, priceRequest, priceLoaded, setConvertDate, setText } from "../../actions";
-import { ICurrencyService } from "../../services/currency-service";
-import Converter from "../../components/Converter";
+import { Component } from "react";
 import { withCurrencyService } from "../../components/hoc";
+
+import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TConverterDate, TConverterText } from "../../actions/types";
+import { TConverterReducer } from "../../reducers/converter-reducer";
+import { priceError, priceRequest, priceLoaded, setConverterDate, setConverterText } from "../../actions";
+import { ICurrencyService } from "../../services/currency-service";
+
+import Converter from "../../components/Converter";
+import Spinner from "../../components/spinner";
 
 type TDispatchProps = {
   priceRequest: () => TFetchPriceRequest
   priceLoaded: (price: number) => TFetchPriceSuccess
   priceError: (error: Error) => TFetchPriceError
-  setText: (text: string, inputValid: boolean) => TText
-  setConvertDate: (date: string) => TConvertDate
+  setConverterText: (text: string, inputValid: boolean) => TConverterText
+  setConverterDate: (date: string) => TConverterDate
 }
 
 type TOwnProps = {
@@ -25,12 +28,12 @@ class ConverterContainer extends Component<ConverterContainerProps> {
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value
-    this.props.setText(text, !!(this.isValid(text)))
+    this.props.setConverterText(text, this.isValid(text))
   }
 
   handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value
-    this.props.setConvertDate(date)
+    this.props.setConverterDate(date)
   }
 
   handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,11 +45,8 @@ class ConverterContainer extends Component<ConverterContainerProps> {
 
     priceRequest();
     service
-      .getLatestFromTo(fromName, toName, quantity, date)
-      .then((price: number) => {
-        console.log(price)
-        priceLoaded(price)
-      })
+      .getConvertPrice(fromName, toName, quantity, date)
+      .then((price: number) => priceLoaded(price))
       .catch((error: Error) => priceError(error));
   };
 
@@ -57,12 +57,13 @@ class ConverterContainer extends Component<ConverterContainerProps> {
 
   render() {
 
-    const { loading, result, inputValid, date, error, text} = this.props;
+    const { loading, result, service, inputValid, date, error, text} = this.props;
+    const currentDate = service.getCurrentDate()
 
     let general: any
 
     if (loading) {
-      general = <span>Выполняем работу :)</span>;
+      general = <Spinner />
     } else if (error) {
       general = <span>Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.</span>
     } else {
@@ -75,6 +76,7 @@ class ConverterContainer extends Component<ConverterContainerProps> {
       general={general}
       inputValid={!inputValid}
       date={date}
+      currentDate={currentDate}
       handleFormSubmit={this.handleFormSubmit}
       handleInputChange={this.handleInputChange}
       handleDateChange={this.handleDateChange}
@@ -93,8 +95,8 @@ const mapDispatchToProps: TDispatchProps = {
   priceRequest,
   priceLoaded,
   priceError,
-  setText,
-  setConvertDate,
+  setConverterText,
+  setConverterDate,
 };
 
 export default withCurrencyService()(

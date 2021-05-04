@@ -1,5 +1,7 @@
 import { Form, Table } from "react-bootstrap";
 
+import './CurrencyRates.css'
+
 type CurrencyRatesProps = {
   options: any
   items: any
@@ -8,10 +10,9 @@ type CurrencyRatesProps = {
 }
 
 const CurrencyRates: React.FC<CurrencyRatesProps> = ({ options, items, base, handleSelectChange }) => {
-  // console.log(base)
   return (
     <>
-      <Form>
+      <Form className='mt-3'>
         <Form.Group controlId="exampleForm.SelectCustom">
           <Form.Label>Выберите валюту</Form.Label>
           <Form.Control as="select"
@@ -23,11 +24,11 @@ const CurrencyRates: React.FC<CurrencyRatesProps> = ({ options, items, base, han
         </Form.Group>
       </Form>
       <Table striped bordered hover size="sm">
-        <caption>КУРСЫ В РЕЖИМЕ РЕАЛЬНОГО ВРЕМЕНИ</caption>
+        <caption>Курсы в режиме реального времени</caption>
         <thead>
           <tr>
             <th>Основные пары</th>
-            <th>Покупка</th>
+            <th>Курс</th>
           </tr>
         </thead>
         <tbody>

@@ -1,15 +1,15 @@
 import { Component } from "react";
 
-import { Container } from "react-bootstrap";
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-
 import Header from "./components/Header";
-
-import 'bootstrap/dist/css/bootstrap.min.css'
 import ConverterContainer from "./containers/ConverterContainer";
 import CurrencyRatesContainer from "./containers/CurrencyRatesContainer";
 import ArchiveRatesContainer from "./containers/ArchiveRatesContainer";
 import AvialableCurrenciesContainer from "./containers/AvialableCurrenciesContainer";
+
+import { Container } from "react-bootstrap";
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 class App extends Component {
 

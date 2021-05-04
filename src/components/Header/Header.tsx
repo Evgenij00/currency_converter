@@ -1,17 +1,12 @@
-import React from "react";
-
 import { LinkContainer } from 'react-router-bootstrap'
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-
 const Header = () => {
   return (
     <Navbar bg='dark' variant='dark'>
-      <LinkContainer to='/'>
-        <Navbar.Brand>Конвертер валют</Navbar.Brand>
-      </LinkContainer>
+      <Navbar.Brand>LOGO</Navbar.Brand>
       <Nav className='mr-auto'>
         <LinkContainer to='/'>
           <Nav.Link>Курсы валют</Nav.Link>

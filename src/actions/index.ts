@@ -1,5 +1,5 @@
-import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_TEXT, SET_CONVERT_DATE, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS, FETCH_ARCHIVE_FUILURE, FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE, FETCH_AVIALABLE_FUILURE, FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS } from "./consts"
-import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TText, TConvertDate, TFeatchRatesRequest, TFetchRatesError, TFetchRatesSuccess, TArchiveBase, TArchiveDate, TFeatchArchiveRequest, TFetchArchiveError, TFetchArchiveSuccess, TFeatchAvialableRequest, TFetchAvialableError, TFetchAvialableSuccess } from "./types"
+import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS, FETCH_ARCHIVE_FUILURE, FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE, FETCH_AVIALABLE_FUILURE, FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS, SET_CONVERTER_DATE, SET_CONVERTER_TEXT } from "./consts"
+import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TFeatchRatesRequest, TFetchRatesError, TFetchRatesSuccess, TArchiveBase, TArchiveDate, TFeatchArchiveRequest, TFetchArchiveError, TFetchArchiveSuccess, TFeatchAvialableRequest, TFetchAvialableError, TFetchAvialableSuccess, TConverterDate, TConverterText } from "./types"
 
 const ratesRequested = (): TFeatchRatesRequest => ({ type: FETCH_RATES_REQUEST })
 
@@ -31,16 +31,16 @@ const priceError = (error: Error): TFetchPriceError => {
   }
 }
 
-const setText = (text: string, inputValid: boolean): TText => {
+const setConverterText = (text: string, inputValid: boolean): TConverterText => {
   return {
-    type: SET_TEXT,
+    type: SET_CONVERTER_TEXT,
     payload: { text, inputValid }
   }
 }
 
-const setConvertDate = (date: string): TConvertDate => {
+const setConverterDate = (date: string): TConverterDate => {
   return {
-    type: SET_CONVERT_DATE,
+    type: SET_CONVERTER_DATE,
     payload: date
   }
 }
@@ -95,8 +95,8 @@ export {
   priceRequest,
   priceLoaded,
   priceError,
-  setText,
-  setConvertDate,
+  setConverterText,
+  setConverterDate,
 
   archiveRequested,
   archiveLoaded,

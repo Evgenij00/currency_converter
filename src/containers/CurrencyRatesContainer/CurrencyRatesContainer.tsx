@@ -1,11 +1,14 @@
 import { Component } from 'react'
 import { connect } from 'react-redux';
+import { withCurrencyService } from '../../components/hoc';
+
 import { ratesError, ratesLoaded, ratesRequested } from '../../actions';
 import { TFeatchRatesRequest, TFetchRatesSuccess, TFetchRatesError } from '../../actions/types';
-import CurrencyRates from '../../components/CurrencyRates';
-import { withCurrencyService } from '../../components/hoc';
 import { TCurrencyReducer } from '../../reducers/currency-rates-reducer';
 import { ICurrencyService } from '../../services/currency-service';
+
+import CurrencyRates from '../../components/CurrencyRates';
+import Spinner from '../../components/spinner';
 
 type TDispatchProps = {
   ratesRequested: () => TFeatchRatesRequest
@@ -22,12 +25,12 @@ type CurrencyRatesContainerProps = TDispatchProps & TCurrencyReducer & TOwnProps
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
 
   private _idInterval: any
-  private _interval: number = 10000000
+  private _interval: number = 3000
 
   componentDidMount(): void {
-    const { ratesRequested } = this.props
+    const { ratesRequested, base } = this.props
     ratesRequested()
-    this.startTimer(this.props.base)
+    this.startTimer(base)
   }
 
   componentWillUnmount(): void {
@@ -41,7 +44,7 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
 
   fetchRates = (base: string) => {
     const {service, ratesLoaded, ratesError} = this.props
-    service.getLatestFrom(base)
+    service.getLatestByBase(base)
       .then((data) => ratesLoaded(data))
       .catch((error: Error) => ratesError(error))
   }
@@ -75,9 +78,8 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
 
   render() {
     const { base, loading, error, currencyRates } = this.props;
-    // console.log(base)
 
-    if (loading) return <h1>Выполняем работу :)</h1>;
+    if (loading) return <Spinner />
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
     const options = currencyRates.map(this.renderSelect)

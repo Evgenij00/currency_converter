@@ -40,11 +40,6 @@ const currencyRatesReducer = (state: any, action: any): TCurrencyReducer => {
         loading: false,
         error: action.payload,
       };
-    // case SET_BASE_CURRENCY:
-    //   return {
-    //     ...state,
-    //     base: action.payload
-    //   }
     default:
       return state;
   }

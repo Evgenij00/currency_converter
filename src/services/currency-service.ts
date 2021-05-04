@@ -1,37 +1,58 @@
+import axios from "axios";
+
 export interface ICurrencyService {
-  getLatestFrom: (base: string) => Promise<any>
-  getLatestFromTo: (base: string, target: string, amount: string, date: string) => Promise<number>
-  getHistoryFrom: (base: string, data: string) => Promise<[string, number][]>
+  getCurrentDate: () => string
+  getResource: (url: string) => Promise<any>
+  getLatestByBase: (base: string) => Promise<any>
+  getLatestByBaseRandom: (base: string) => Promise<any>
+  getConvertPrice: (base: string, target: string, amount: string, date: string) => Promise<number>
+  getArchiveByBase: (base: string, data: string) => Promise<[string, number][]>
   getCurrencies: () => Promise<[string, string][]>
+  _simulateUpdateCurrenciesRates: (rates: [string, number][]) => [string, number][]
+  _getRandomPrice: (price: number) => number 
 }
 
 export default class CurrencyService implements ICurrencyService {
 
-  _apiBase = 'https://api.frankfurter.app';
+  private _apiBase = 'https://api.frankfurter.app';
+  private _currentDate = new Date().toLocaleDateString('en-CA')
 
-  getResource = async (url: string) => {
-    const res = await fetch(`${this._apiBase}${url}`);
-    return await res.json();
+  getCurrentDate = (): string => {
+    return this._currentDate
   }
 
-  getLatestFrom = async (base: string): Promise<any> => {
+  getResource = async (url: string): Promise<any> => {
+    const result = await axios.get(`${this._apiBase}${url}`);
+    return result.data
+  }
+
+  getLatestByBase = async (base: string): Promise<any> => {
     const result = await this.getResource(`/latest?from=${base}`)
-    result.rates[base] = 1
-    const rates = Object.entries(result.rates)
+    result.rates[base] = 1 //необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
     return {
       base: result.base,
-      rates
+      rates: Object.entries(result.rates)
     }
   }
 
-  getLatestFromTo = async (base: string, target: string, amount: string, date: string): Promise<number> => {
+  getLatestByBaseRandom = async (base: string): Promise<any> => {
+    const result = await this.getLatestByBase(base)
+    const result2 = {
+      rates: this._simulateUpdateCurrenciesRates(result.rates),
+      base: result.base
+    }
+    console.log(result2)
+    return result2
+  }
+
+  getConvertPrice = async (base: string, target: string, amount: string, date: string): Promise<number> => {
     const result = await this.getResource(`/${date}?amount=${amount}&from=${base}&to=${target}`)
     return result.rates[target]
   }
 
-  getHistoryFrom = async (base: string, data: string): Promise<[string, number][]> => {
+  getArchiveByBase = async (base: string, data: string): Promise<[string, number][]> => {
     const result = await this.getResource(`/${data}?from=${base}`)
-    result.rates[base] = 1
+    result.rates[base] = 1 //необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
     return Object.entries(result.rates)
   }
 
@@ -39,5 +60,18 @@ export default class CurrencyService implements ICurrencyService {
     const result = await this.getResource('/currencies')
     console.log(result)
     return Object.entries(result)
+  }
+
+  _simulateUpdateCurrenciesRates = (rates: [string, number][]): [string, number][] => {
+    return rates.map((item: [string, number]) => {
+      const diff = this._getRandomPrice(item[1])
+      item[0] = item[0] + '/' + diff
+      item[1] = +(item[1] + diff).toFixed(5)
+      return item
+    })
+  }
+
+  _getRandomPrice = (price: number): number => {
+    return (-0.001 + Math.random() * (0.001 + 0.001)) * price
   }
 }

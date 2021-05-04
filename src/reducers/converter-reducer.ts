@@ -1,4 +1,4 @@
-import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_TEXT, SET_CONVERT_DATE } from "../actions/consts";
+import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_CONVERTER_DATE, SET_CONVERTER_TEXT } from "../actions/consts";
 
 export type TConverterReducer = {
   text: string
@@ -16,7 +16,7 @@ const converterReducer = (state: any, action: any): TConverterReducer => {
       ...state,
       text: "",
       result: "",
-      date: '2021-05-04',
+      date: new Date().toLocaleDateString('en-CA'),
       loading: false,
       error: null,
       inputValid: false
@@ -32,20 +32,12 @@ const converterReducer = (state: any, action: any): TConverterReducer => {
         error: null,
       };
     case FETCH_PRICE_SUCCESS:
-      if (!action.payload) {
-        return {
-          ...state,
-          loading: false,
-          error: null,
-        };
-      } else {
-        return {
-          ...state,
-          result: action.payload,
-          loading: false,
-          error: null,
-        };
-      }
+      return {
+        ...state,
+        result: action.payload,
+        loading: false,
+        error: null,
+      };
     case FETCH_PRICE_FUILURE:
       return {
         ...state,
@@ -53,13 +45,13 @@ const converterReducer = (state: any, action: any): TConverterReducer => {
         error: action.payload,
         loading: false,
       };
-    case SET_TEXT:
+    case SET_CONVERTER_TEXT:
       return {
         ...state,
         text: action.payload.text,
         inputValid: action.payload.inputValid
       };
-    case SET_CONVERT_DATE:
+    case SET_CONVERTER_DATE:
       return {
         ...state,
         date: action.payload
