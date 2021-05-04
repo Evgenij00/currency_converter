@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TConvertDate, TText } from "../../actions/types";
 import { TConverterReducer } from "../../reducers/converter-reducer";
 import { priceError, priceRequest, priceLoaded, setConvertDate, setText } from "../../actions";
-import CurrencyService, { ICurrencyService } from "../../services/currency-service";
+import { ICurrencyService } from "../../services/currency-service";
 import Converter from "../../components/Converter";
+import { withCurrencyService } from "../../components/hoc";
 
 type TDispatchProps = {
   priceRequest: () => TFetchPriceRequest
@@ -14,11 +15,13 @@ type TDispatchProps = {
   setConvertDate: (date: string) => TConvertDate
 }
 
-type ConverterContainerProps = TConverterReducer & TDispatchProps
+type TOwnProps = {
+  service: ICurrencyService
+}
+
+type ConverterContainerProps = TConverterReducer & TDispatchProps & TOwnProps
 
 class ConverterContainer extends Component<ConverterContainerProps> {
-
-  service: ICurrencyService = new CurrencyService()
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value
@@ -33,12 +36,12 @@ class ConverterContainer extends Component<ConverterContainerProps> {
   handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { text, date, priceRequest, priceLoaded, priceError } = this.props
+    const { text, date, service, priceRequest, priceLoaded, priceError } = this.props
 
     const [quantity, fromName, , toName] = text.toUpperCase().split(" ");
 
     priceRequest();
-    this.service
+    service
       .getLatestFromTo(fromName, toName, quantity, date)
       .then((price: number) => {
         console.log(price)
@@ -94,4 +97,6 @@ const mapDispatchToProps: TDispatchProps = {
   setConvertDate,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConverterContainer)
+export default withCurrencyService()(
+  connect(mapStateToProps, mapDispatchToProps)(ConverterContainer)
+)

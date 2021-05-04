@@ -7,9 +7,9 @@ import Header from "./components/Header";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CurrencyRates from "./components/CurrencyRates";
-import Converter from "./components/Converter";
 import ArchiveRates from "./components/ArchiveRates";
 import AvailableCurrencies from "./components/AvialableCurrencies/AvialableCurrencies";
+import ConverterContainer from "./containers/ConverterContainer";
 
 class App extends Component {
 
@@ -20,7 +20,7 @@ class App extends Component {
       <Container fluid='sm'>
         <Switch>
           <Route path='/' exact component={CurrencyRates} />
-          <Route path='/convert' component={Converter} />
+          <Route path='/convert' component={ConverterContainer} />
           <Route path='/course-archive' component={ArchiveRates} />
           <Route path='/available-currencies' component={AvailableCurrencies} />
         </Switch>
