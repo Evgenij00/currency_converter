@@ -2,7 +2,12 @@ import { Table } from "react-bootstrap";
 
 import './AvialableCurrencies.css'
 
-const AvailableCurrencies = () => {
+type AvialableCurrenciesProps = {
+  items: [string, string][]
+}
+
+const AvialableCurrencies: React.FC<AvialableCurrenciesProps> = ({items}) => {
+  // console.log(items)
   return (
     <Table striped bordered hover size="sm">
       <caption>Доступные валюты</caption>
@@ -13,33 +18,10 @@ const AvailableCurrencies = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            USD/RUB
-              </td>
-          <td>
-            <span>1,0325</span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            USD/RUB
-              </td>
-          <td>
-            <span>1,0325</span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            USD/RUB
-              </td>
-          <td>
-            <span>1,0325</span>
-          </td>
-        </tr>
+        {items}
       </tbody>
     </Table>
   );
 };
 
-export default AvailableCurrencies
+export default AvialableCurrencies

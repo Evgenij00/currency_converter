@@ -1,5 +1,5 @@
-import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_TEXT, SET_CONVERT_DATE, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS, FETCH_ARCHIVE_FUILURE, FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE } from "./consts"
-import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TText, TConvertDate, TFeatchRatesRequest, TFetchRatesError, TFetchRatesSuccess, TArchiveBase, TArchiveDate, TFeatchArchiveRequest, TFetchArchiveError, TFetchArchiveSuccess } from "./types"
+import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_TEXT, SET_CONVERT_DATE, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS, FETCH_ARCHIVE_FUILURE, FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE, FETCH_AVIALABLE_FUILURE, FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS } from "./consts"
+import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TText, TConvertDate, TFeatchRatesRequest, TFetchRatesError, TFetchRatesSuccess, TArchiveBase, TArchiveDate, TFeatchArchiveRequest, TFetchArchiveError, TFetchArchiveSuccess, TFeatchAvialableRequest, TFetchAvialableError, TFetchAvialableSuccess } from "./types"
 
 const ratesRequested = (): TFeatchRatesRequest => ({ type: FETCH_RATES_REQUEST })
 
@@ -73,11 +73,25 @@ const setArchiveDate = (date: string): TArchiveDate => {
   }
 }
 
+const avialableRequested = (): TFeatchAvialableRequest => ({ type: FETCH_AVIALABLE_REQUEST })
+
+const avialableLoaded = (currencies: [string, string][]): TFetchAvialableSuccess => {
+  return {
+    type: FETCH_AVIALABLE_SUCCESS,
+    payload: currencies,
+  }
+}
+
+const avialableError = (error: Error): TFetchAvialableError => ({
+  type: FETCH_AVIALABLE_FUILURE,
+  payload: error
+})
+
 export {
   ratesRequested,
   ratesLoaded,
   ratesError,
-  
+
   priceRequest,
   priceLoaded,
   priceError,
@@ -89,4 +103,8 @@ export {
   archiveError,
   setArchiveBase,
   setArchiveDate,
+
+  avialableRequested,
+  avialableLoaded,
+  avialableError,
 }
