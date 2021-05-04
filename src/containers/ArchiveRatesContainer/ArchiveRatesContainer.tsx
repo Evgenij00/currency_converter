@@ -2,10 +2,13 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import { withCurrencyService } from "../../components/hoc";
 
-import { TFeatchArchiveRequest, TFetchArchiveSuccess, TFetchArchiveError, TArchiveBase, TArchiveDate } from "../../actions/types";
-import { TArchiveReducer } from "../../reducers/archive-reducer";
+import { TArchiveReducer } from "../../reducers/archive-reducer/archive-reducer";
 import { ICurrencyService } from "../../services/currency-service";
-import {archiveRequested, archiveLoaded, archiveError, setArchiveBase, setArchiveDate} from '../../actions'
+import {renderSelect, renderTable} from '../../utils'
+
+import { TFeatchArchiveRequest, TFetchArchiveSuccess,
+TFetchArchiveError, TArchiveBase, TArchiveDate, archiveRequested,
+archiveLoaded, archiveError, setArchiveBase, setArchiveDate } from "../../reducers/archive-reducer/actions";
 
 import ArchiveRates from '../../components/ArchiveRates'
 import Spinner from "../../components/spinner";
@@ -27,8 +30,8 @@ type ArchiveRatesContainerProps = TArchiveReducer & TDispatchProps & TOwnProps
 class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
 
   componentDidMount() {
-    const {base, date, service, archiveLoaded, archiveError} = this.props
-
+    const {base, date, service, archiveLoaded, archiveError, archiveRequested} = this.props
+    archiveRequested();
     service
       .getArchiveByBase(base, date)
       .then((rates: [string, number][]) => archiveLoaded(rates))
@@ -49,45 +52,24 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
   handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const {base, date, service, archiveLoaded, archiveError } = this.props
+    const {base, date, service, archiveLoaded, archiveError, archiveRequested } = this.props
 
-    // archiveRequested();
+    archiveRequested();
     service
       .getArchiveByBase(base, date)
       .then((rates: [string, number][]) => archiveLoaded(rates))
       .catch((error: Error) => archiveError(error));
   };
 
-  renderSelect = (item: any): any => {
-    return (
-      <option key={item[0]} value={item[0]}>
-        {item[0]}
-      </option>
-    );
-  };
-
-  renderTabels = (item: any): any => {
-    return (
-      <tr key={item[0]}>
-        <td>
-          {this.props.base}/{item[0]}
-        </td>
-        <td>
-          <span>{item[1]}</span>
-        </td>
-      </tr>
-    );
-  };
-
   render() {
-    const {base, date, service, loading, error, arhiveRates} = this.props
+    const {base, date, service, showTable, loading, error, arhiveRates} = this.props
     const currentDate = service.getCurrentDate()
 
     if (loading) return <Spinner />
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    const options = arhiveRates.map(this.renderSelect)
-    const items = arhiveRates.map(this.renderTabels)
+    const options = renderSelect(arhiveRates)
+    const items = showTable ? renderTable(base, arhiveRates) : null
 
     return (
       <ArchiveRates
@@ -104,9 +86,9 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
 };
 
 const mapStateToProps = (
-  { archiveReducer: { base, date, arhiveRates, loading, error }}:
+  { archiveReducer: { base, date, showTable, arhiveRates, loading, error }}:
   { archiveReducer: TArchiveReducer }): TArchiveReducer => {
-  return { base, date, arhiveRates, loading, error };
+  return { base, date, showTable, arhiveRates, loading, error };
 };
 
 const mapDispatchToProps: TDispatchProps = {

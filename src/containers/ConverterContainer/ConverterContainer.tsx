@@ -2,13 +2,15 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import { withCurrencyService } from "../../components/hoc";
 
-import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, TConverterDate, TConverterText } from "../../actions/types";
-import { TConverterReducer } from "../../reducers/converter-reducer";
-import { priceError, priceRequest, priceLoaded, setConverterDate, setConverterText } from "../../actions";
+import { TConverterReducer } from "../../reducers/converter-reducer/converter-reducer";
 import { ICurrencyService } from "../../services/currency-service";
 
 import Converter from "../../components/Converter";
 import Spinner from "../../components/spinner";
+
+import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, 
+TConverterText, TConverterDate, priceError, priceRequest, 
+priceLoaded, setConverterText, setConverterDate } from "../../reducers/converter-reducer/actions";
 
 type TDispatchProps = {
   priceRequest: () => TFetchPriceRequest

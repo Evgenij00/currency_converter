@@ -1,8 +1,9 @@
-import { FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, FETCH_ARCHIVE_FUILURE, SET_ARCHIVE_DATE, SET_ARCHIVE_BASE } from "../actions/consts";
+import { FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, FETCH_ARCHIVE_FUILURE, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE } from "./actions";
 
 export type TArchiveReducer = {
   base: string
   date: string
+  showTable: boolean
   arhiveRates: [string, number][]
   loading: boolean
   error: Error | null
@@ -16,6 +17,7 @@ const archiveReducer = (state: any, action: any): TArchiveReducer => {
       base: localStorage.getItem('base') || 'USD',
       date: new Date().toLocaleDateString('en-CA'),
       arhiveRates: [],
+      showTable: true,
       loading: true,
       error: null,
     }
@@ -33,6 +35,7 @@ const archiveReducer = (state: any, action: any): TArchiveReducer => {
       return {
         ...state,
         arhiveRates: action.payload,
+        showTable: true,
         loading: false,
         error: null,
       };
@@ -46,11 +49,13 @@ const archiveReducer = (state: any, action: any): TArchiveReducer => {
     case SET_ARCHIVE_BASE:
       return {
         ...state,
+        showTable: false,
         base: action.payload
       };
     case SET_ARCHIVE_DATE:
       return {
         ...state,
+        showTable: false,
         date: action.payload,
       };
     default:

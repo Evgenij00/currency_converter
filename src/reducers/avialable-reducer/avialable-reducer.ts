@@ -1,4 +1,4 @@
-import { FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS, FETCH_AVIALABLE_FUILURE } from "../actions/consts";
+import { FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS, FETCH_AVIALABLE_FUILURE } from "./actions";
 
 export type TAvialableReducer = {
   avialableCurrencies: [string, string][] | []

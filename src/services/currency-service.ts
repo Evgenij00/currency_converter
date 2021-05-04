@@ -9,7 +9,7 @@ export interface ICurrencyService {
   getArchiveByBase: (base: string, data: string) => Promise<[string, number][]>
   getCurrencies: () => Promise<[string, string][]>
   _simulateUpdateCurrenciesRates: (rates: [string, number][]) => [string, number][]
-  _getRandomPrice: (price: number) => number 
+  _getRandomDifference: (price: number) => number 
 }
 
 export default class CurrencyService implements ICurrencyService {
@@ -62,16 +62,18 @@ export default class CurrencyService implements ICurrencyService {
     return Object.entries(result)
   }
 
+  //Позволяет сымитировать обновление курсов валют
   _simulateUpdateCurrenciesRates = (rates: [string, number][]): [string, number][] => {
     return rates.map((item: [string, number]) => {
-      const diff = this._getRandomPrice(item[1])
+      const diff = this._getRandomDifference(item[1])
       item[0] = item[0] + '/' + diff
       item[1] = +(item[1] + diff).toFixed(5)
       return item
     })
   }
 
-  _getRandomPrice = (price: number): number => {
+  //Получем мнимую разницу старого курса и нового
+  _getRandomDifference = (price: number): number => {
     return (-0.001 + Math.random() * (0.001 + 0.001)) * price
   }
 }

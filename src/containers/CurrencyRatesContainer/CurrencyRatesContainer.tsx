@@ -2,13 +2,15 @@ import { Component } from 'react'
 import { connect } from 'react-redux';
 import { withCurrencyService } from '../../components/hoc';
 
-import { ratesError, ratesLoaded, ratesRequested } from '../../actions';
-import { TFeatchRatesRequest, TFetchRatesSuccess, TFetchRatesError } from '../../actions/types';
-import { TCurrencyReducer } from '../../reducers/currency-rates-reducer';
+import { TCurrencyReducer } from '../../reducers/currency-rates-reducer/currency-rates-reducer';
 import { ICurrencyService } from '../../services/currency-service';
 
 import CurrencyRates from '../../components/CurrencyRates';
 import Spinner from '../../components/spinner';
+import { renderSelect, renderTable } from '../../utils';
+
+import { TFeatchRatesRequest, TFetchRatesSuccess,
+TFetchRatesError, ratesError, ratesLoaded, ratesRequested } from '../../reducers/currency-rates-reducer/actions';
 
 type TDispatchProps = {
   ratesRequested: () => TFeatchRatesRequest
@@ -25,7 +27,7 @@ type CurrencyRatesContainerProps = TDispatchProps & TCurrencyReducer & TOwnProps
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
 
   private _idInterval: any
-  private _interval: number = 3000
+  private _interval: number = 100000
 
   componentDidMount(): void {
     const { ratesRequested, base } = this.props
@@ -55,35 +57,15 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     this.startTimer(e.target.value)
   }
 
-  renderSelect = (item: any): any => {
-    return (
-      <option key={item[0]} value={item[0]}>
-        {item[0]}
-      </option>
-    );
-  };
-
-  renderTabels = (item: any): any => {
-    return (
-      <tr key={item[0]}>
-        <td>
-          {this.props.base}/{item[0]}
-        </td>
-        <td>
-          <span>{item[1]}</span>
-        </td>
-      </tr>
-    );
-  };
-
   render() {
+    console.log('render')
     const { base, loading, error, currencyRates } = this.props;
 
     if (loading) return <Spinner />
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    const options = currencyRates.map(this.renderSelect)
-    const items = currencyRates.map(this.renderTabels)
+    const options = renderSelect(currencyRates)
+    const items = renderTable(base, currencyRates)
 
     return (
       <CurrencyRates

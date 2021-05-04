@@ -2,13 +2,15 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import { withCurrencyService } from "../../components/hoc";
 
-import { TFeatchAvialableRequest, TFetchAvialableError, TFetchAvialableSuccess } from "../../actions/types";
-import {avialableRequested, avialableLoaded, avialableError} from '../../actions'
-import { TAvialableReducer } from "../../reducers/avialable-reducer";
+import { TAvialableReducer } from "../../reducers/avialable-reducer/avialable-reducer";
 import { ICurrencyService } from "../../services/currency-service";
 
 import AvialableCurrencies from '../../components/AvialableCurrencies'
 import Spinner from "../../components/spinner";
+
+import { TFeatchAvialableRequest, TFetchAvialableSuccess, 
+TFetchAvialableError, avialableRequested, 
+avialableLoaded, avialableError } from "../../reducers/avialable-reducer/actions";
 
 type TDispatchProps = {
   avialableRequested: () => TFeatchAvialableRequest
