@@ -1,4 +1,4 @@
-import { FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_PRICE_FUILURE, SET_TEXT, SET_CONVERT_DATE, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS } from "./consts"
+import { FETCH_PRICE_FUILURE, FETCH_PRICE_REQUEST, FETCH_PRICE_SUCCESS, FETCH_RATES_FUILURE, FETCH_RATES_REQUEST, FETCH_RATES_SUCCESS, SET_CONVERT_DATE, SET_TEXT, FETCH_ARCHIVE_REQUEST, FETCH_ARCHIVE_SUCCESS, FETCH_ARCHIVE_FUILURE, SET_ARCHIVE_BASE, SET_ARCHIVE_DATE } from "./consts"
 
 export type TFeatchRatesRequest = {
   type: typeof FETCH_RATES_REQUEST
@@ -38,5 +38,32 @@ export type TText = {
 
 export type TConvertDate = {
   type: typeof SET_CONVERT_DATE
+  payload: string
+}
+
+export type TFeatchArchiveRequest = {
+  type: typeof FETCH_ARCHIVE_REQUEST
+}
+
+export type TFetchArchiveSuccess = {
+  type: typeof FETCH_ARCHIVE_SUCCESS,
+  payload: {
+    base: string,
+    rates: any
+  }
+}
+
+export type TFetchArchiveError = {
+  type: typeof FETCH_ARCHIVE_FUILURE
+  payload: Error
+}
+
+export type TArchiveBase = {
+  type: typeof SET_ARCHIVE_BASE
+  payload: string
+}
+
+export type TArchiveDate = {
+  type: typeof SET_ARCHIVE_DATE
   payload: string
 }

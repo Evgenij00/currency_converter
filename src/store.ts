@@ -1,9 +1,10 @@
 import { combineReducers, createStore } from 'redux'
-import {converterReducer, currencyRatesReducer} from './reducers'
+import {converterReducer, currencyRatesReducer, archiveReducer} from './reducers'
 
 const rootReducer = combineReducers({
   currencyRatesReducer,
   converterReducer,
+  archiveReducer,
 })
 
 const store = createStore(rootReducer)

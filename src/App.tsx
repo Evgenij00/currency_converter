@@ -6,10 +6,10 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Header from "./components/Header";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import ArchiveRates from "./components/ArchiveRates";
 import AvailableCurrencies from "./components/AvialableCurrencies/AvialableCurrencies";
 import ConverterContainer from "./containers/ConverterContainer";
 import CurrencyRatesContainer from "./containers/CurrencyRatesContainer";
+import ArchiveRatesContainer from "./containers/ArchiveRatesContainer";
 
 class App extends Component {
 
@@ -21,7 +21,7 @@ class App extends Component {
         <Switch>
           <Route path='/' exact component={CurrencyRatesContainer} />
           <Route path='/convert' component={ConverterContainer} />
-          <Route path='/course-archive' component={ArchiveRates} />
+          <Route path='/course-archive' component={ArchiveRatesContainer} />
           <Route path='/available-currencies' component={AvailableCurrencies} />
         </Switch>
       </Container>
