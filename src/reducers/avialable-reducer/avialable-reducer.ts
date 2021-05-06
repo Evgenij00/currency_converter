@@ -1,20 +1,23 @@
-import { FETCH_AVIALABLE_REQUEST, FETCH_AVIALABLE_SUCCESS, FETCH_AVIALABLE_FUILURE } from "./actions";
+import {
+  FETCH_AVIALABLE_REQUEST,
+  FETCH_AVIALABLE_SUCCESS,
+  FETCH_AVIALABLE_FUILURE,
+} from "./actions";
 
 export type TAvialableReducer = {
-  avialableCurrencies: [string, string][] | []
-  loading: boolean
-  error: Error | null
-}
+  avialableCurrencies: [string, string][] | [];
+  loading: boolean;
+  error: Error | null;
+};
 
 const avialableReducer = (state: any, action: any): TAvialableReducer => {
-
   if (state === undefined) {
     return {
       ...state,
       avialableCurrencies: [],
       loading: true,
-      error: null
-    }
+      error: null,
+    };
   }
 
   switch (action.type) {
@@ -23,21 +26,21 @@ const avialableReducer = (state: any, action: any): TAvialableReducer => {
         ...state,
         avialableCurrencies: [],
         loading: true,
-        error: null
+        error: null,
       };
     case FETCH_AVIALABLE_SUCCESS:
       return {
         ...state,
         avialableCurrencies: action.payload,
         loading: false,
-        error: null
+        error: null,
       };
     case FETCH_AVIALABLE_FUILURE:
       return {
         ...state,
         avialableCurrencies: [],
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     default:
       return state;

@@ -1,95 +1,84 @@
-import { Component } from 'react'
-import { connect } from 'react-redux';
-import { withCurrencyService } from '../../components/hoc';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import withCurrencyService from "../../components/hoc";
 
-import { TCurrencyReducer } from '../../reducers/currency-rates-reducer/currency-rates-reducer';
-import { ICurrencyService } from '../../services/currency-service';
+import { TCurrencyReducer } from "../../reducers/currency-rates-reducer/currency-rates-reducer";
+import { TService } from "../../services/currency-service";
 
-import CurrencyRates from '../../components/CurrencyRates';
-import Spinner from '../../components/spinner';
-import { renderSelect, renderTable } from '../../utils';
+import CurrencyRates from "../../components/CurrencyRates";
+import Spinner from "../../components/spinner";
+import { renderSelect, renderTable } from "../../utils";
 
-import { TFeatchRatesRequest, TFetchRatesSuccess,
-TFetchRatesError, ratesError, ratesLoaded, ratesRequested } from '../../reducers/currency-rates-reducer/actions';
+import {
+  actionsCurrencyRatesReducer,
+  TActionsCurrencyRatesReducer,
+} from "../../reducers/currency-rates-reducer/actions";
 
-type TDispatchProps = {
-  ratesRequested: () => TFeatchRatesRequest
-  ratesLoaded: (data: any) => TFetchRatesSuccess
-  ratesError: (error: Error) => TFetchRatesError
-}
-
-type TOwnProps = {
-  service: ICurrencyService
-}
-
-type CurrencyRatesContainerProps = TDispatchProps & TCurrencyReducer & TOwnProps
+type CurrencyRatesContainerProps = TCurrencyReducer &
+  TActionsCurrencyRatesReducer &
+  TService;
 
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
+  private idInterval: any;
 
-  private _idInterval: any
-  private _interval: number = 100000
+  private interval = 100000;
 
   componentDidMount(): void {
-    const { ratesRequested, base } = this.props
-    ratesRequested()
-    this.startTimer(base)
+    const { ratesRequested, base } = this.props;
+    ratesRequested();
+    this.startTimer(base);
   }
 
   componentWillUnmount(): void {
-    clearInterval(this._idInterval);
+    clearInterval(this.idInterval);
   }
 
   startTimer = (base: string) => {
-    this.fetchRates(base)
-    this._idInterval = setInterval(() => this.fetchRates(base), this._interval)
-  }
+    this.fetchRates(base);
+    this.idInterval = setInterval(() => this.fetchRates(base), this.interval);
+  };
 
   fetchRates = (base: string) => {
-    const {service, ratesLoaded, ratesError} = this.props
-    service.getLatestByBase(base)
+    const { service, ratesLoaded, ratesError } = this.props;
+    service
+      .getLatestByBase(base)
       .then((data) => ratesLoaded(data))
-      .catch((error: Error) => ratesError(error))
-  }
+      .catch((error: Error) => ratesError(error));
+  };
 
   handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    localStorage.setItem('base', e.target.value)
-    clearInterval(this._idInterval)
-    this.startTimer(e.target.value)
-  }
+    localStorage.setItem("base", e.target.value);
+    clearInterval(this.idInterval);
+    this.startTimer(e.target.value);
+  };
 
   render() {
-    console.log('render')
     const { base, loading, error, currencyRates } = this.props;
 
-    if (loading) return <Spinner />
+    if (loading) return <Spinner />;
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    const options = renderSelect(currencyRates)
-    const items = renderTable(base, currencyRates)
+    const options = renderSelect(currencyRates);
+    const items = renderTable(base, currencyRates);
 
     return (
       <CurrencyRates
         options={options}
         items={items}
         base={base}
-        handleSelectChange={this.handleSelectChange} />
-    )
+        handleSelectChange={this.handleSelectChange}
+      />
+    );
   }
 }
 
-const mapStateToProps = (
-  { currencyRatesReducer: { base, currencyRates, error, loading } }:
-  { currencyRatesReducer: TCurrencyReducer }
-): TCurrencyReducer => {
-  return { base, currencyRates, error, loading };
-};
-
-const mapDispatchToProps: TDispatchProps = {
-  ratesLoaded,
-  ratesError,
-  ratesRequested
-}
+const mapStateToProps = ({
+  currencyRatesReducer,
+}: {
+  currencyRatesReducer: TCurrencyReducer;
+}): TCurrencyReducer => currencyRatesReducer;
+const mapDispatchToProps: TActionsCurrencyRatesReducer = actionsCurrencyRatesReducer;
 
 export default withCurrencyService()(
   connect(mapStateToProps, mapDispatchToProps)(CurrencyRatesContainer)
-)
+);

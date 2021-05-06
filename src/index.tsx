@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 
-import { CurrencyServiceProvider } from './components/currency-service-context';
-import CurrencyService from './services/currency-service';
-import store from './store';
+import { CurrencyServiceProvider } from "./components/currency-service-context";
+import CurrencyService from "./services/currency-service";
+import store from "./store";
 
-import App from './App';
+import App from "./App";
 
-import './index.css';
+import "./index.css";
 
-const service = new CurrencyService()
+const service = new CurrencyService();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,5 +20,5 @@ ReactDOM.render(
       </CurrencyServiceProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

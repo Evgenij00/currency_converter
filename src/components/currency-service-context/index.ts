@@ -1,9 +1,6 @@
 import {
   CurrencyServiceProvider,
-  CurrencyServiceConsumer
-} from './currency-service-context'
+  CurrencyServiceConsumer,
+} from "./currency-service-context";
 
-export {
-  CurrencyServiceProvider,
-  CurrencyServiceConsumer
-}
+export { CurrencyServiceProvider, CurrencyServiceConsumer };

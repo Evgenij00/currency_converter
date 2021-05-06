@@ -1,3 +1,3 @@
 import Converter from "./Converter";
 
-export default Converter
+export default Converter;

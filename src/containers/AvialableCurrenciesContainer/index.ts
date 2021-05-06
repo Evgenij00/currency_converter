@@ -1,3 +1,3 @@
 import AvialableCurrenciesContainer from "./AvialableCurrenciesContainer";
 
-export default AvialableCurrenciesContainer
+export default AvialableCurrenciesContainer;

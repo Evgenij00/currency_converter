@@ -1,12 +1,11 @@
-import React from 'react'
-import CurrencyService, { ICurrencyService } from '../../services/currency-service'
+import React from "react";
+import CurrencyService, {
+  ICurrencyService,
+} from "../../services/currency-service";
 
 const {
   Provider: CurrencyServiceProvider,
-  Consumer: CurrencyServiceConsumer
-} = React.createContext<ICurrencyService>(new CurrencyService())
+  Consumer: CurrencyServiceConsumer,
+} = React.createContext<ICurrencyService>(new CurrencyService());
 
-export {
-  CurrencyServiceProvider,
-  CurrencyServiceConsumer
-}
+export { CurrencyServiceProvider, CurrencyServiceConsumer };

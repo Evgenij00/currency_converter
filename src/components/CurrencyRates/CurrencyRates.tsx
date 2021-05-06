@@ -1,24 +1,32 @@
+import React from "react";
 import { Form, Table } from "react-bootstrap";
 
-import './CurrencyRates.css'
+import "./CurrencyRates.css";
 
 type CurrencyRatesProps = {
-  options: any
-  items: any
-  base: string
-  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
-}
+  options: JSX.Element[];
+  items: JSX.Element[];
+  base: string;
+  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+};
 
-const CurrencyRates: React.FC<CurrencyRatesProps> = ({ options, items, base, handleSelectChange }) => {
+const CurrencyRates: React.FC<CurrencyRatesProps> = ({
+  options,
+  items,
+  base,
+  handleSelectChange,
+}) => {
   return (
     <>
-      <Form className='mt-3'>
+      <Form className="mt-3">
         <Form.Group controlId="exampleForm.SelectCustom">
           <Form.Label>Выберите валюту</Form.Label>
-          <Form.Control as="select"
+          <Form.Control
+            as="select"
             value={base}
             onChange={handleSelectChange}
-            custom>
+            custom
+          >
             {options}
           </Form.Control>
         </Form.Group>
@@ -31,12 +39,10 @@ const CurrencyRates: React.FC<CurrencyRatesProps> = ({ options, items, base, han
             <th>Курс</th>
           </tr>
         </thead>
-        <tbody>
-          {items}
-        </tbody>
+        <tbody>{items}</tbody>
       </Table>
     </>
-  )
-}
+  );
+};
 
-export default CurrencyRates
+export default CurrencyRates;

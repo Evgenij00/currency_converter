@@ -1,3 +1,3 @@
 import CurrencyRatesContainer from "./CurrencyRatesContainer";
 
-export default CurrencyRatesContainer
+export default CurrencyRatesContainer;

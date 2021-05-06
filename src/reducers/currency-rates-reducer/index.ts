@@ -1,3 +1,3 @@
 import currencyRatesReducer from "./currency-rates-reducer";
 
-export default currencyRatesReducer
+export default currencyRatesReducer;

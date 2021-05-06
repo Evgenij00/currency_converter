@@ -1,3 +1,3 @@
 import converterReducer from "./converter-reducer";
 
-export default converterReducer
+export default converterReducer;

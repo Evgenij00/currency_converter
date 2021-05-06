@@ -1,5 +1,3 @@
-import withCurrencyService from './with-currency-service'
+import withCurrencyService from "./with-currency-service";
 
-export {
-  withCurrencyService
-}
+export default withCurrencyService;

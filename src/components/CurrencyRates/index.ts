@@ -1,3 +1,3 @@
 import CurrencyRates from "./CurrencyRates";
 
-export default CurrencyRates
+export default CurrencyRates;

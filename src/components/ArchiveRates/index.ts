@@ -1,3 +1,3 @@
 import ArchiveRates from "./ArchiveRates";
 
-export default ArchiveRates
+export default ArchiveRates;

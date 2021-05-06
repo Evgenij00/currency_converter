@@ -1,47 +1,46 @@
 import { connect } from "react-redux";
-import { Component } from "react";
-import { withCurrencyService } from "../../components/hoc";
+import React, { Component } from "react";
+import withCurrencyService from "../../components/hoc";
 
 import { TConverterReducer } from "../../reducers/converter-reducer/converter-reducer";
-import { ICurrencyService } from "../../services/currency-service";
+import { TService } from "../../services/currency-service";
 
 import Converter from "../../components/Converter";
 import Spinner from "../../components/spinner";
 
-import { TFetchPriceRequest, TFetchPriceSuccess, TFetchPriceError, 
-TConverterText, TConverterDate, priceError, priceRequest, 
-priceLoaded, setConverterText, setConverterDate } from "../../reducers/converter-reducer/actions";
+import {
+  TActionsConverterReducer,
+  actionsConverterReducer,
+} from "../../reducers/converter-reducer/actions";
 
-type TDispatchProps = {
-  priceRequest: () => TFetchPriceRequest
-  priceLoaded: (price: number) => TFetchPriceSuccess
-  priceError: (error: Error) => TFetchPriceError
-  setConverterText: (text: string, inputValid: boolean) => TConverterText
-  setConverterDate: (date: string) => TConverterDate
-}
-
-type TOwnProps = {
-  service: ICurrencyService
-}
-
-type ConverterContainerProps = TConverterReducer & TDispatchProps & TOwnProps
+type ConverterContainerProps = TConverterReducer &
+  TActionsConverterReducer &
+  TService;
 
 class ConverterContainer extends Component<ConverterContainerProps> {
-
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value
-    this.props.setConverterText(text, this.isValid(text))
-  }
+    const { setConverterText } = this.props;
+    const text = e.target.value;
+    setConverterText(text, this.isValid(text));
+  };
 
   handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = e.target.value
-    this.props.setConverterDate(date)
-  }
+    const { setConverterDate } = this.props;
+    const date = e.target.value;
+    setConverterDate(date);
+  };
 
   handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const { text, date, service, priceRequest, priceLoaded, priceError } = this.props
+    const {
+      text,
+      date,
+      service,
+      priceRequest,
+      priceLoaded,
+      priceError,
+    } = this.props;
 
     const [quantity, fromName, , toName] = text.toUpperCase().split(" ");
 
@@ -58,49 +57,53 @@ class ConverterContainer extends Component<ConverterContainerProps> {
   };
 
   render() {
+    const {
+      loading,
+      result,
+      service,
+      inputValid,
+      date,
+      error,
+      text,
+    } = this.props;
+    const currentDate = service.getCurrentDate();
 
-    const { loading, result, service, inputValid, date, error, text} = this.props;
-    const currentDate = service.getCurrentDate()
-
-    let general: any
+    let general: JSX.Element;
 
     if (loading) {
-      general = <Spinner />
+      general = <Spinner />;
     } else if (error) {
-      general = <span>Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.</span>
+      general = (
+        <span>
+          Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.
+        </span>
+      );
     } else {
       general = <span>{result}</span>;
     }
 
     return (
       <Converter
-      text={text}
-      general={general}
-      inputValid={!inputValid}
-      date={date}
-      currentDate={currentDate}
-      handleFormSubmit={this.handleFormSubmit}
-      handleInputChange={this.handleInputChange}
-      handleDateChange={this.handleDateChange}
+        text={text}
+        general={general}
+        inputValid={!inputValid}
+        date={date}
+        currentDate={currentDate}
+        handleFormSubmit={this.handleFormSubmit}
+        handleInputChange={this.handleInputChange}
+        handleDateChange={this.handleDateChange}
       />
     );
   }
 }
 
-const mapStateToProps = (
-  { converterReducer: { loading, result, inputValid, date, error, text } }:
-  { converterReducer: TConverterReducer }): TConverterReducer => {
-  return { loading, result, date, error, text, inputValid};
-};
-
-const mapDispatchToProps: TDispatchProps = {
-  priceRequest,
-  priceLoaded,
-  priceError,
-  setConverterText,
-  setConverterDate,
-};
+const mapStateToProps = ({
+  converterReducer,
+}: {
+  converterReducer: TConverterReducer;
+}): TConverterReducer => converterReducer;
+const mapDispatchToProps: TActionsConverterReducer = actionsConverterReducer;
 
 export default withCurrencyService()(
   connect(mapStateToProps, mapDispatchToProps)(ConverterContainer)
-)
+);
