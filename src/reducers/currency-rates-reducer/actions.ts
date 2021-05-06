@@ -1,4 +1,4 @@
-import { TBaseAndRates } from "../../services/currency-service";
+import { TBaseAndRates, TRate } from "../../services/currency-service";
 
 export const FETCH_RATES_REQUEST = "FETCH_RATES_REQUEST";
 export const FETCH_RATES_SUCCESS = "FETCH_RATES_SUCCESS";
@@ -16,7 +16,7 @@ export type TFetchRatesSuccess = {
   type: typeof FETCH_RATES_SUCCESS;
   payload: {
     base: string;
-    rates: [string, number][];
+    rates: TRate[];
   };
 };
 

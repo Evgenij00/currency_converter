@@ -1,3 +1,4 @@
+import { TRate } from "../../services/currency-service";
 import {
   FETCH_ARCHIVE_REQUEST,
   FETCH_ARCHIVE_SUCCESS,
@@ -10,7 +11,7 @@ export type TArchiveReducer = {
   base: string;
   date: string;
   showTable: boolean;
-  arhiveRates: [string, number][];
+  arhiveRates: TRate[];
   loading: boolean;
   error: Error | null;
 };

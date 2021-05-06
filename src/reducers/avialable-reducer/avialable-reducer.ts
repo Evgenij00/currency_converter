@@ -1,3 +1,4 @@
+import { TCurrency } from "../../services/currency-service";
 import {
   FETCH_AVIALABLE_REQUEST,
   FETCH_AVIALABLE_SUCCESS,
@@ -5,7 +6,7 @@ import {
 } from "./actions";
 
 export type TAvialableReducer = {
-  avialableCurrencies: [string, string][] | [];
+  avialableCurrencies: TCurrency[] | [];
   loading: boolean;
   error: Error | null;
 };

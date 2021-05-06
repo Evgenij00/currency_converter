@@ -1,4 +1,4 @@
-import { TRates } from "../../services/currency-service";
+import { TRate } from "../../services/currency-service";
 
 export const FETCH_ARCHIVE_REQUEST = "FETCH_ARCHIVE_REQUEST";
 export const FETCH_ARCHIVE_SUCCESS = "FETCH_ARCHIVE_SUCCESS";
@@ -16,10 +16,10 @@ const archiveRequested = (): TFeatchArchiveRequest => ({
 
 export type TFetchArchiveSuccess = {
   type: typeof FETCH_ARCHIVE_SUCCESS;
-  payload: TRates;
+  payload: TRate[];
 };
 
-const archiveLoaded = (data: TRates): TFetchArchiveSuccess => {
+const archiveLoaded = (data: TRate[]): TFetchArchiveSuccess => {
   return {
     type: FETCH_ARCHIVE_SUCCESS,
     payload: data,
@@ -62,7 +62,7 @@ const setArchiveDate = (date: string): TArchiveDate => {
 
 export type TActionsArchiveReducer = {
   archiveRequested: () => TFeatchArchiveRequest;
-  archiveLoaded: (data: [string, number][]) => TFetchArchiveSuccess;
+  archiveLoaded: (data: TRate[]) => TFetchArchiveSuccess;
   archiveError: (error: Error) => TFetchArchiveError;
   setArchiveBase: (base: string) => TArchiveBase;
   setArchiveDate: (date: string) => TArchiveDate;

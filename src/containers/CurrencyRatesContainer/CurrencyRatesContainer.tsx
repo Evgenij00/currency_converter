@@ -23,13 +23,13 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
 
   private interval = 100000;
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { ratesRequested, base } = this.props;
     ratesRequested();
     this.startTimer(base);
   }
 
-  componentWillUnmount(): void {
+  componentWillUnmount() {
     clearInterval(this.idInterval);
   }
 

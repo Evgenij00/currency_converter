@@ -1,3 +1,4 @@
+import { TRate } from "../../services/currency-service";
 import {
   FETCH_RATES_REQUEST,
   FETCH_RATES_SUCCESS,
@@ -6,7 +7,7 @@ import {
 
 export type TCurrencyReducer = {
   base: string;
-  currencyRates: [string, number][] | [];
+  currencyRates: TRate[] | [];
   error: Error | null;
   loading: boolean;
 };

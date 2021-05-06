@@ -6,10 +6,11 @@ export type TService = {
 
 export type TBaseAndRates = {
   base: string;
-  rates: TRates;
+  rates: TRate[];
 };
 
-export type TRates = [string, number][];
+export type TCurrency = [string, string];
+export type TRate = [string, number];
 
 export interface ICurrencyService {
   getCurrentDate: () => string;
@@ -22,8 +23,8 @@ export interface ICurrencyService {
     amount: string,
     date: string
   ) => Promise<number>;
-  getArchiveByBase: (base: string, data: string) => Promise<TRates>;
-  getCurrencies: () => Promise<[string, string][]>;
+  getArchiveByBase: (base: string, data: string) => Promise<TRate[]>;
+  getCurrencies: () => Promise<TCurrency[]>;
 }
 
 export default class CurrencyService implements ICurrencyService {
@@ -69,20 +70,20 @@ export default class CurrencyService implements ICurrencyService {
     return result.rates[target];
   };
 
-  getArchiveByBase = async (base: string, date: string): Promise<TRates> => {
+  getArchiveByBase = async (base: string, date: string): Promise<TRate[]> => {
     const result = await this.getResource(`/${date}?from=${base}`);
     result.rates[base] = 1; // необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
     return Object.entries(result.rates);
   };
 
-  getCurrencies = async (): Promise<[string, string][]> => {
+  getCurrencies = async (): Promise<TCurrency[]> => {
     const result = await this.getResource("/currencies");
     return Object.entries(result);
   };
 
   // Позволяет сымитировать обновление курсов валют
-  private simulateUpdateCurrenciesRates = (rates: TRates): TRates => {
-    return rates.map((item: [string, number]) => {
+  private simulateUpdateCurrenciesRates = (rates: TRate[]): TRate[] => {
+    return rates.map((item) => {
       const diff = this.getRandomDifference(item[1]);
       const result = [];
       result[0] = `${item[0]}/${diff}`;

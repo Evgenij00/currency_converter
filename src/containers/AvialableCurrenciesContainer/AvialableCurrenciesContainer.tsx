@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import withCurrencyService from "../../components/hoc";
 
 import { TAvialableReducer } from "../../reducers/avialable-reducer/avialable-reducer";
-import { TService } from "../../services/currency-service";
+import { TCurrency, TService } from "../../services/currency-service";
 
 import AvialableCurrencies from "../../components/AvialableCurrencies";
 import Spinner from "../../components/spinner";
@@ -30,10 +30,10 @@ class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContaine
     service
       .getCurrencies()
       .then((currencies) => avialableLoaded(currencies))
-      .catch((error) => avialableError(error));
+      .catch((error: Error) => avialableError(error));
   }
 
-  renderTabels = (item: [string, string]): JSX.Element => {
+  renderTabels = (item: TCurrency): JSX.Element => {
     return (
       <tr key={item[0]}>
         <td>{item[0]}</td>

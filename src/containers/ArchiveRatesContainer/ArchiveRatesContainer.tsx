@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import withCurrencyService from "../../components/hoc";
 
 import { TArchiveReducer } from "../../reducers/archive-reducer/archive-reducer";
-import { TRates, TService } from "../../services/currency-service";
+import { TService } from "../../services/currency-service";
 import { renderSelect, renderTable } from "../../utils";
 
 import {
@@ -31,7 +31,7 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
     archiveRequested();
     service
       .getArchiveByBase(base, date)
-      .then((rates: TRates) => archiveLoaded(rates))
+      .then((rates) => archiveLoaded(rates))
       .catch((error: Error) => archiveError(error));
   }
 
@@ -63,7 +63,7 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
     archiveRequested();
     service
       .getArchiveByBase(base, date)
-      .then((rates: TRates) => archiveLoaded(rates))
+      .then((rates) => archiveLoaded(rates))
       .catch((error: Error) => archiveError(error));
   };
 

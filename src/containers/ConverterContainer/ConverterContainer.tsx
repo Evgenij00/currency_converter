@@ -47,7 +47,7 @@ class ConverterContainer extends Component<ConverterContainerProps> {
     priceRequest();
     service
       .getConvertPrice(fromName, toName, quantity, date)
-      .then((price: number) => priceLoaded(price))
+      .then((price) => priceLoaded(price))
       .catch((error: Error) => priceError(error));
   };
 
