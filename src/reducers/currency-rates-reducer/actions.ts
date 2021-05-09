@@ -1,10 +1,10 @@
-import { TBaseAndRates, TRate } from "../../services/currency-service";
+import { service, TBaseAndRates, TRate } from "../../services/currency-service";
 
 export const FETCH_RATES_REQUEST = "FETCH_RATES_REQUEST";
 export const FETCH_RATES_SUCCESS = "FETCH_RATES_SUCCESS";
 export const FETCH_RATES_FUILURE = "FETCH_RATES_FUILURE";
 
-export type TFeatchRatesRequest = {
+type TFeatchRatesRequest = {
   type: typeof FETCH_RATES_REQUEST;
 };
 
@@ -12,7 +12,7 @@ const ratesRequested = (): TFeatchRatesRequest => ({
   type: FETCH_RATES_REQUEST,
 });
 
-export type TFetchRatesSuccess = {
+type TFetchRatesSuccess = {
   type: typeof FETCH_RATES_SUCCESS;
   payload: {
     base: string;
@@ -27,7 +27,7 @@ const ratesLoaded = (data: TBaseAndRates): TFetchRatesSuccess => {
   };
 };
 
-export type TFetchRatesError = {
+type TFetchRatesError = {
   type: typeof FETCH_RATES_FUILURE;
   payload: Error;
 };
@@ -37,14 +37,18 @@ const ratesError = (error: Error): TFetchRatesError => ({
   payload: error,
 });
 
+export const fetchRates = (base: string) => (dispatch: any) => {
+  dispatch(ratesRequested());
+  service
+    .getLatestByBase(base)
+    .then((data) => dispatch(ratesLoaded(data)))
+    .catch((error: Error) => dispatch(ratesError(error)));
+};
+
 export type TActionsCurrencyRatesReducer = {
-  ratesRequested: () => TFeatchRatesRequest;
-  ratesLoaded: (data: TBaseAndRates) => TFetchRatesSuccess;
-  ratesError: (error: Error) => TFetchRatesError;
+  fetchRates: any;
 };
 
 export const actionsCurrencyRatesReducer = {
-  ratesLoaded,
-  ratesError,
-  ratesRequested,
+  fetchRates,
 };

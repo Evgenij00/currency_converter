@@ -68,7 +68,8 @@ class ConverterContainer extends Component<ConverterContainerProps> {
     } = this.props;
     const currentDate = service.getCurrentDate();
 
-    let general: JSX.Element;
+    let general: React.ReactElement;
+    // let general: JSX.Element;
 
     if (loading) {
       general = <Spinner />;

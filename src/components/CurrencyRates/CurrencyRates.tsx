@@ -1,46 +1,31 @@
 import React from "react";
-import { Form, Table } from "react-bootstrap";
+import { TRate } from "../../services/currency-service";
 
-import "./CurrencyRates.css";
+import CurrencySelection from "./CurrencySelection/CurrencySelection";
+import RateTable from "./RateTable/RateTable";
 
 type CurrencyRatesProps = {
-  options: JSX.Element[];
-  items: JSX.Element[];
   base: string;
-  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  currencyRates: TRate[];
+  setBaseCurrency: (base: string) => void;
 };
 
-const CurrencyRates: React.FC<CurrencyRatesProps> = ({
-  options,
-  items,
-  base,
-  handleSelectChange,
-}) => {
+const CurrencyRates: React.FC<CurrencyRatesProps> = (props) => {
+  const { base, currencyRates, setBaseCurrency } = props;
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const body = e.target.value;
+    setBaseCurrency(body);
+  };
+
   return (
     <>
-      <Form className="mt-3">
-        <Form.Group controlId="exampleForm.SelectCustom">
-          <Form.Label>Выберите валюту</Form.Label>
-          <Form.Control
-            as="select"
-            value={base}
-            onChange={handleSelectChange}
-            custom
-          >
-            {options}
-          </Form.Control>
-        </Form.Group>
-      </Form>
-      <Table striped bordered hover size="sm">
-        <caption>Курсы в режиме реального времени</caption>
-        <thead>
-          <tr>
-            <th>Основные пары</th>
-            <th>Курс</th>
-          </tr>
-        </thead>
-        <tbody>{items}</tbody>
-      </Table>
+      <CurrencySelection
+        base={base}
+        currencyRates={currencyRates}
+        handleSelectChange={handleSelectChange}
+      />
+      <RateTable currencyRates={currencyRates} base={base} />
     </>
   );
 };

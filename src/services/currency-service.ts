@@ -97,3 +97,5 @@ export default class CurrencyService implements ICurrencyService {
     return (-0.001 + Math.random() * (0.001 + 0.001)) * price;
   };
 }
+
+export const service = new CurrencyService();

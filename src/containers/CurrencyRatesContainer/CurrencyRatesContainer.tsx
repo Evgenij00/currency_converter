@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import withCurrencyService from "../../components/hoc";
 
 import { TCurrencyReducer } from "../../reducers/currency-rates-reducer/currency-rates-reducer";
 import { TService } from "../../services/currency-service";
 
 import CurrencyRates from "../../components/CurrencyRates";
 import Spinner from "../../components/spinner";
-import { renderSelect, renderTable } from "../../utils";
 
 import {
   actionsCurrencyRatesReducer,
@@ -21,11 +19,10 @@ type CurrencyRatesContainerProps = TCurrencyReducer &
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
   private idInterval: any;
 
-  private interval = 100000;
+  private interval = 50000000;
 
   componentDidMount() {
-    const { ratesRequested, base } = this.props;
-    ratesRequested();
+    const { base } = this.props;
     this.startTimer(base);
   }
 
@@ -33,23 +30,16 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     clearInterval(this.idInterval);
   }
 
-  startTimer = (base: string) => {
-    this.fetchRates(base);
-    this.idInterval = setInterval(() => this.fetchRates(base), this.interval);
-  };
-
-  fetchRates = (base: string) => {
-    const { service, ratesLoaded, ratesError } = this.props;
-    service
-      .getLatestByBase(base)
-      .then((data) => ratesLoaded(data))
-      .catch((error: Error) => ratesError(error));
-  };
-
-  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    localStorage.setItem("base", e.target.value);
+  setBaseCurrency = (base: string): void => {
+    localStorage.setItem("base", base);
     clearInterval(this.idInterval);
-    this.startTimer(e.target.value);
+    this.startTimer(base);
+  };
+
+  startTimer = (base: string) => {
+    const { fetchRates } = this.props;
+    fetchRates(base);
+    this.idInterval = setInterval(() => fetchRates(base), this.interval);
   };
 
   render() {
@@ -58,27 +48,22 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     if (loading) return <Spinner />;
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    const options = renderSelect(currencyRates);
-    const items = renderTable(base, currencyRates);
-
     return (
       <CurrencyRates
-        options={options}
-        items={items}
+        currencyRates={currencyRates}
         base={base}
-        handleSelectChange={this.handleSelectChange}
+        setBaseCurrency={this.setBaseCurrency}
       />
     );
   }
 }
 
-const mapStateToProps = ({
-  currencyRatesReducer,
-}: {
-  currencyRatesReducer: TCurrencyReducer;
-}): TCurrencyReducer => currencyRatesReducer;
+const mapStateToProps = (state: any): TCurrencyReducer =>
+  state.currencyRatesReducer;
+
 const mapDispatchToProps: TActionsCurrencyRatesReducer = actionsCurrencyRatesReducer;
 
-export default withCurrencyService()(
-  connect(mapStateToProps, mapDispatchToProps)(CurrencyRatesContainer)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CurrencyRatesContainer);
