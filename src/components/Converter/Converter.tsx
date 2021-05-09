@@ -6,25 +6,42 @@ import { Button, Col } from "react-bootstrap";
 
 type ConverterProps = {
   text: string;
-  general: JSX.Element;
+  result: JSX.Element;
   inputValid: boolean;
   date: string;
   currentDate: string;
-  handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  getConvertPrice: () => void;
+  setText: (text: string) => void;
+  setDate: (date: string) => void;
 };
 
-const Converter: FC<ConverterProps> = ({
-  text,
-  general,
-  inputValid,
-  date,
-  currentDate,
-  handleFormSubmit,
-  handleInputChange,
-  handleDateChange,
-}) => {
+const Converter: FC<ConverterProps> = (props) => {
+  const {
+    text,
+    result,
+    inputValid,
+    date,
+    currentDate,
+    getConvertPrice,
+    setText,
+    setDate,
+  } = props;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const body = e.target.value;
+    setText(body);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const body = e.target.value;
+    setDate(body);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    getConvertPrice();
+  };
+
   return (
     <>
       <Form className="mt-3 mb-2" onSubmit={handleFormSubmit}>
@@ -61,7 +78,7 @@ const Converter: FC<ConverterProps> = ({
         >
           Конвертировать
         </Button>
-        <span>{general}</span>
+        <span>{result}</span>
       </Form>
       <Link to="/available-currencies">Посмотреть список доступных валют</Link>
     </>

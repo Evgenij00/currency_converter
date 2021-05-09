@@ -72,7 +72,7 @@ export default class CurrencyService implements ICurrencyService {
 
   getArchiveByBase = async (base: string, date: string): Promise<TRate[]> => {
     const result = await this.getResource(`/${date}?from=${base}`);
-    result.rates[base] = 1; // необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
+    result.rates[base] = 1;
     return Object.entries(result.rates);
   };
 
@@ -81,7 +81,7 @@ export default class CurrencyService implements ICurrencyService {
     return Object.entries(result);
   };
 
-  // Позволяет сымитировать обновление курсов валют
+  // для имитации обновления курсов валют
   private simulateUpdateCurrenciesRates = (rates: TRate[]): TRate[] => {
     return rates.map((item) => {
       const diff = this.getRandomDifference(item[1]);
@@ -92,7 +92,7 @@ export default class CurrencyService implements ICurrencyService {
     });
   };
 
-  // Получем мнимую разницу старого курса и нового
+  // получение мнимой разницы
   private getRandomDifference = (price: number): number => {
     return (-0.001 + Math.random() * (0.001 + 0.001)) * price;
   };

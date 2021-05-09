@@ -18,48 +18,25 @@ type ConverterContainerProps = TConverterReducer &
   TService;
 
 class ConverterContainer extends Component<ConverterContainerProps> {
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setText = (text: string) => {
     const { setConverterText } = this.props;
-    const text = e.target.value;
-    setConverterText(text, this.isValid(text));
+    setConverterText(text);
   };
 
-  handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setDate = (date: string) => {
     const { setConverterDate } = this.props;
-    const date = e.target.value;
     setConverterDate(date);
   };
 
-  handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const {
-      text,
-      date,
-      service,
-      priceRequest,
-      priceLoaded,
-      priceError,
-    } = this.props;
-
-    const [quantity, fromName, , toName] = text.toUpperCase().split(" ");
-
-    priceRequest();
-    service
-      .getConvertPrice(fromName, toName, quantity, date)
-      .then((price) => priceLoaded(price))
-      .catch((error: Error) => priceError(error));
-  };
-
-  isValid = (text: string) => {
-    const regExp = /^\d+\s[A-Za-z]{3}\sin\s[A-Za-z]{3}$/;
-    return Boolean(text.match(regExp)?.[0]);
+  getConvertPrice = () => {
+    const { text, date, fetchPrice } = this.props;
+    fetchPrice(text, date);
   };
 
   render() {
     const {
       loading,
-      result,
+      price,
       service,
       inputValid,
       date,
@@ -68,41 +45,39 @@ class ConverterContainer extends Component<ConverterContainerProps> {
     } = this.props;
     const currentDate = service.getCurrentDate();
 
-    let general: React.ReactElement;
+    let result: React.ReactElement;
     // let general: JSX.Element;
 
     if (loading) {
-      general = <Spinner />;
+      result = <Spinner />;
     } else if (error) {
-      general = (
+      result = (
         <span>
           Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.
         </span>
       );
     } else {
-      general = <span>{result}</span>;
+      result = <span>{price}</span>;
     }
 
     return (
       <Converter
         text={text}
-        general={general}
+        result={result}
         inputValid={!inputValid}
         date={date}
         currentDate={currentDate}
-        handleFormSubmit={this.handleFormSubmit}
-        handleInputChange={this.handleInputChange}
-        handleDateChange={this.handleDateChange}
+        getConvertPrice={this.getConvertPrice}
+        setText={this.setText}
+        setDate={this.setDate}
       />
     );
   }
 }
 
-const mapStateToProps = ({
-  converterReducer,
-}: {
-  converterReducer: TConverterReducer;
-}): TConverterReducer => converterReducer;
+const mapStateToProps = (state: any): TConverterReducer =>
+  state.converterReducer;
+
 const mapDispatchToProps: TActionsConverterReducer = actionsConverterReducer;
 
 export default withCurrencyService()(
