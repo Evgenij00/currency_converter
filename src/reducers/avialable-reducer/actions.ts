@@ -1,10 +1,10 @@
-import { TCurrency } from "../../services/currency-service";
+import { service, TCurrency } from "../../services/currency-service";
 
 export const FETCH_AVIALABLE_REQUEST = "FETCH_AVIALABLE_REQUEST";
 export const FETCH_AVIALABLE_SUCCESS = "FETCH_AVIALABLE_SUCCESS";
 export const FETCH_AVIALABLE_FUILURE = "FETCH_AVIALABLE_FUILURE";
 
-export type TFeatchAvialableRequest = {
+type TFeatchAvialableRequest = {
   type: typeof FETCH_AVIALABLE_REQUEST;
 };
 
@@ -12,7 +12,7 @@ const avialableRequested = (): TFeatchAvialableRequest => ({
   type: FETCH_AVIALABLE_REQUEST,
 });
 
-export type TFetchAvialableSuccess = {
+type TFetchAvialableSuccess = {
   type: typeof FETCH_AVIALABLE_SUCCESS;
   payload: TCurrency[];
 };
@@ -24,7 +24,7 @@ const avialableLoaded = (currencies: TCurrency[]): TFetchAvialableSuccess => {
   };
 };
 
-export type TFetchAvialableError = {
+type TFetchAvialableError = {
   type: typeof FETCH_AVIALABLE_FUILURE;
   payload: Error;
 };
@@ -34,14 +34,18 @@ const avialableError = (error: Error): TFetchAvialableError => ({
   payload: error,
 });
 
+const fetchCurrencies = () => (dispatch: any) => {
+  dispatch(avialableRequested());
+  service
+    .getCurrencies()
+    .then((currencies) => dispatch(avialableLoaded(currencies)))
+    .catch((error: Error) => dispatch(avialableError(error)));
+};
+
 export type TActionsAvialableReducer = {
-  avialableRequested: () => TFeatchAvialableRequest;
-  avialableLoaded: (currencies: TCurrency[]) => TFetchAvialableSuccess;
-  avialableError: (error: Error) => TFetchAvialableError;
+  fetchCurrencies: () => any;
 };
 
 export const actionsAvialableReducer = {
-  avialableRequested,
-  avialableLoaded,
-  avialableError,
+  fetchCurrencies,
 };
