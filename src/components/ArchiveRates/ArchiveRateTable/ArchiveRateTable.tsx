@@ -1,18 +1,19 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { TRate } from "../../../services/currency-service";
-import { renderTable } from "../../../utils";
+import { TRate } from "../../../currency-service";
+import TableItem from "./TableItem";
 
 type ArchiveRateTableProps = {
   arhiveRates: TRate[];
-  showTable: boolean;
   base: string;
 };
 
 const ArchiveRateTable: React.FC<ArchiveRateTableProps> = (props) => {
-  const { showTable, base, arhiveRates } = props;
+  const { base, arhiveRates } = props;
 
-  const items = showTable ? renderTable(base, arhiveRates) : null;
+  const items = arhiveRates.map((item) => (
+    <TableItem key={item[0]} base={base} target={item[0]} price={item[1]} />
+  ));
 
   return (
     <Table striped bordered hover size="sm">

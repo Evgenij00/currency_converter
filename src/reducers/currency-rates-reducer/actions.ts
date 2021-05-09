@@ -1,4 +1,4 @@
-import { service, TBaseAndRates, TRate } from "../../services/currency-service";
+import { service, TBaseAndRates, TRate } from "../../currency-service";
 
 export const FETCH_RATES_REQUEST = "FETCH_RATES_REQUEST";
 export const FETCH_RATES_SUCCESS = "FETCH_RATES_SUCCESS";
@@ -46,7 +46,7 @@ export const fetchRates = (base: string) => (dispatch: any) => {
 };
 
 export type TActionsCurrencyRatesReducer = {
-  fetchRates: any;
+  fetchRates: (base: string) => any;
 };
 
 export const actionsCurrencyRatesReducer = {

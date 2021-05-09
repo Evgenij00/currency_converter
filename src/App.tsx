@@ -3,10 +3,10 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import ConverterContainer from "./containers/ConverterContainer";
-import CurrencyRatesContainer from "./containers/CurrencyRatesContainer";
-import ArchiveRatesContainer from "./containers/ArchiveRatesContainer";
-import AvialableCurrenciesContainer from "./containers/AvialableCurrenciesContainer";
+import CurrencyRatesContainer from "./components/CurrencyRates";
+import ConverterContainer from "./components/Converter";
+import ArchiveRatesContainer from "./components/ArchiveRates";
+import AvialableCurrenciesContainer from "./components/AvialableCurrencies";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

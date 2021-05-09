@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
-import { CurrencyServiceProvider } from "./components/currency-service-context";
-import CurrencyService from "./services/currency-service";
+import { CurrencyServiceProvider } from "./currency-service-context";
+import CurrencyService from "./currency-service";
 import store from "./store";
 
 import App from "./App";

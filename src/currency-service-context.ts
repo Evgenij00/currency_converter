@@ -1,7 +1,5 @@
 import React from "react";
-import CurrencyService, {
-  ICurrencyService,
-} from "../../services/currency-service";
+import CurrencyService, { ICurrencyService } from "./currency-service";
 
 const {
   Provider: CurrencyServiceProvider,

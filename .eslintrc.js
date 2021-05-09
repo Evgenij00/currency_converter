@@ -30,7 +30,6 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
-    "prefer-destructuring": ["error", {"object": false, "array": false}],
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     'linebreak-style': 'off',

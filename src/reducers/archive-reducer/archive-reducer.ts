@@ -1,34 +1,21 @@
-import { TRate } from "../../services/currency-service";
+import { TRate } from "../../currency-service";
 import {
   FETCH_ARCHIVE_REQUEST,
   FETCH_ARCHIVE_SUCCESS,
   FETCH_ARCHIVE_FUILURE,
-  SET_ARCHIVE_BASE,
-  SET_ARCHIVE_DATE,
 } from "./actions";
 
-export type TArchiveReducer = {
-  base: string;
-  date: string;
-  showTable: boolean;
-  arhiveRates: TRate[];
-  loading: boolean;
-  error: Error | null;
+const initialState = {
+  base: localStorage.getItem("base") || "USD",
+  date: new Date().toLocaleDateString("en-CA"),
+  loading: true,
+  arhiveRates: [] as TRate[] | [],
+  error: null as Error | null,
 };
 
-const archiveReducer = (state: any, action: any): TArchiveReducer => {
-  if (state === undefined) {
-    return {
-      ...state,
-      base: localStorage.getItem("base") || "USD",
-      date: new Date().toLocaleDateString("en-CA"),
-      arhiveRates: [],
-      showTable: true,
-      loading: true,
-      error: null,
-    };
-  }
+export type TArchiveReducer = typeof initialState;
 
+const archiveReducer = (state = initialState, action: any): TArchiveReducer => {
   switch (action.type) {
     case FETCH_ARCHIVE_REQUEST:
       return {
@@ -40,8 +27,9 @@ const archiveReducer = (state: any, action: any): TArchiveReducer => {
     case FETCH_ARCHIVE_SUCCESS:
       return {
         ...state,
-        arhiveRates: action.payload,
-        showTable: true,
+        base: action.payload.base,
+        date: action.payload.date,
+        arhiveRates: action.payload.rates,
         loading: false,
         error: null,
       };
@@ -51,18 +39,6 @@ const archiveReducer = (state: any, action: any): TArchiveReducer => {
         arhiveRates: [],
         loading: false,
         error: action.payload,
-      };
-    case SET_ARCHIVE_BASE:
-      return {
-        ...state,
-        showTable: false,
-        base: action.payload,
-      };
-    case SET_ARCHIVE_DATE:
-      return {
-        ...state,
-        showTable: false,
-        date: action.payload,
       };
     default:
       return state;

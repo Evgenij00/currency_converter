@@ -1,3 +1,3 @@
-import ArchiveRates from "./ArchiveRates";
+import ArchiveRatesContainer from "./ArchiveRatesContainer";
 
-export default ArchiveRates;
+export default ArchiveRatesContainer;

@@ -1,18 +1,25 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { TRate } from "../../../services/currency-service";
-import { renderSelect } from "../../../utils";
+import { TRate } from "../../../currency-service";
+import SelectionItem from "./SelectionItem";
 
 type CurrencySelectionProps = {
   base: string;
   currencyRates: TRate[];
-  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  setBaseCurrency: (base: string) => void;
 };
 
 const CurrencySelection: React.FC<CurrencySelectionProps> = (props) => {
-  const { currencyRates, base, handleSelectChange } = props;
+  const { currencyRates, base, setBaseCurrency } = props;
 
-  const options = renderSelect(currencyRates);
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const body = e.target.value;
+    setBaseCurrency(body);
+  };
+
+  const options = currencyRates.map((item) => (
+    <SelectionItem key={item[0]} name={item[0]} />
+  ));
   return (
     <Form className="mt-3">
       <Form.Group controlId="exampleForm.SelectCustom">

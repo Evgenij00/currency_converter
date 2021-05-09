@@ -6,33 +6,26 @@ import {
   SET_CONVERTER_DATE,
 } from "./actions";
 
-export type TConverterReducer = {
-  text: string;
-  price: number | string;
-  date: string;
-  loading: boolean;
-  error: Error | null;
-  inputValid: boolean;
-};
-
 function isValid(text: string) {
   const regExp = /^\d+\s[A-Za-z]{3}\sin\s[A-Za-z]{3}$/;
   return Boolean(text.match(regExp)?.[0]);
 }
 
-const converterReducer = (state: any, action: any): TConverterReducer => {
-  if (state === undefined) {
-    return {
-      ...state,
-      text: "",
-      price: "",
-      date: new Date().toLocaleDateString("en-CA"),
-      loading: false,
-      error: null,
-      inputValid: false,
-    };
-  }
+const initialState = {
+  text: "",
+  date: new Date().toLocaleDateString("en-CA"),
+  loading: false,
+  inputValid: false,
+  price: "" as number | string,
+  error: null as Error | null,
+};
 
+export type TConverterReducer = typeof initialState;
+
+const converterReducer = (
+  state = initialState,
+  action: any
+): TConverterReducer => {
   switch (action.type) {
     case FETCH_PRICE_REQUEST:
       return {
@@ -56,12 +49,10 @@ const converterReducer = (state: any, action: any): TConverterReducer => {
         loading: false,
       };
     case SET_CONVERTER_TEXT: {
-      const text = action.payload;
-      const inputValid = isValid(text);
       return {
         ...state,
-        text,
-        inputValid,
+        text: action.payload,
+        inputValid: isValid(action.payload),
       };
     }
     case SET_CONVERTER_DATE:

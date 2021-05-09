@@ -1,4 +1,4 @@
-import { service } from "../../services/currency-service";
+import { service } from "../../currency-service";
 
 export const FETCH_PRICE_REQUEST = "FETCH_PRICE_REQUEST";
 export const FETCH_PRICE_SUCCESS = "FETCH_PRICE_SUCCESS";
@@ -75,7 +75,7 @@ const fetchPrice = (text: string, date: string) => (dispatch: any) => {
 export type TActionsConverterReducer = {
   setConverterText: (text: string) => TConverterText;
   setConverterDate: (date: string) => TConverterDate;
-  fetchPrice: (text: string, date: string) => any;
+  fetchPrice: (text: string, date: string) => void;
 };
 
 export const actionsConverterReducer = {

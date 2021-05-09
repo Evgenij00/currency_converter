@@ -1,14 +1,12 @@
 import React from "react";
-import { Col, Form, Button } from "react-bootstrap";
-import { TRate } from "../../../services/currency-service";
-import { renderSelect } from "../../../utils";
+import { Col, Form } from "react-bootstrap";
+import { TRate } from "../../../currency-service";
+import SelectionItem from "./SelectionItem";
 
 type ArchiveSelectionParametersProps = {
   date: string;
-  currentDate: string;
   base: string;
   arhiveRates: TRate[];
-  getArchiveRates: () => void;
   setBaseCurrency: (base: string) => void;
   setDate: (date: string) => void;
 };
@@ -16,20 +14,8 @@ type ArchiveSelectionParametersProps = {
 const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
   props
 ) => {
-  const {
-    date,
-    currentDate,
-    base,
-    arhiveRates,
-    getArchiveRates,
-    setBaseCurrency,
-    setDate,
-  } = props;
+  const { date, base, arhiveRates, setBaseCurrency, setDate } = props;
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    getArchiveRates();
-  };
   const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
     setBaseCurrency(body);
@@ -39,10 +25,13 @@ const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
     setDate(body);
   };
 
-  const options = renderSelect(arhiveRates);
+  const options = arhiveRates.map((item) => (
+    <SelectionItem key={item[0]} name={item[0]} />
+  ));
+  const currentDate = new Date().toLocaleDateString("en-CA");
 
   return (
-    <Form className="mt-3" onSubmit={handleFormSubmit}>
+    <Form className="mt-3">
       <Form.Row>
         <Form.Group as={Col} md="4" controlId="exampleForm.SelectCustom">
           <Form.Label>Выберите валюту</Form.Label>
@@ -65,9 +54,6 @@ const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
           />
         </Form.Group>
       </Form.Row>
-      <Button type="submit" variant="primary">
-        Получить
-      </Button>
     </Form>
   );
 };

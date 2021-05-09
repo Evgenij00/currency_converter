@@ -9,11 +9,16 @@ export type TBaseAndRates = {
   rates: TRate[];
 };
 
+export type TFetchArchiveCurrencies = {
+  base: string;
+  date: string;
+  rates: TRate[];
+};
+
 export type TCurrency = [string, string];
 export type TRate = [string, number];
 
 export interface ICurrencyService {
-  getCurrentDate: () => string;
   getResource: (url: string) => Promise<any>;
   getLatestByBase: (base: string) => Promise<TBaseAndRates>;
   getLatestByBaseRandom: (base: string) => Promise<TBaseAndRates>;
@@ -23,18 +28,15 @@ export interface ICurrencyService {
     amount: string,
     date: string
   ) => Promise<number>;
-  getArchiveByBase: (base: string, data: string) => Promise<TRate[]>;
+  getArchiveByBase: (
+    base: string,
+    data: string
+  ) => Promise<TFetchArchiveCurrencies>;
   getCurrencies: () => Promise<TCurrency[]>;
 }
 
 export default class CurrencyService implements ICurrencyService {
   private apiBase = "https://api.frankfurter.app";
-
-  private currentDate = new Date().toLocaleDateString("en-CA");
-
-  getCurrentDate = (): string => {
-    return this.currentDate;
-  };
 
   getResource = async (url: string): Promise<any> => {
     const result = await axios.get(`${this.apiBase}${url}`);
@@ -50,14 +52,6 @@ export default class CurrencyService implements ICurrencyService {
     };
   };
 
-  getLatestByBaseRandom = async (base: string): Promise<TBaseAndRates> => {
-    const result = await this.getLatestByBase(base);
-    return {
-      rates: this.simulateUpdateCurrenciesRates(result.rates),
-      base: result.base,
-    };
-  };
-
   getConvertPrice = async (
     base: string,
     target: string,
@@ -70,15 +64,31 @@ export default class CurrencyService implements ICurrencyService {
     return result.rates[target];
   };
 
-  getArchiveByBase = async (base: string, date: string): Promise<TRate[]> => {
-    const result = await this.getResource(`/${date}?from=${base}`);
-    result.rates[base] = 1;
-    return Object.entries(result.rates);
+  getArchiveByBase = async (
+    base: string,
+    date: string
+  ): Promise<TFetchArchiveCurrencies> => {
+    let { rates } = await this.getResource(`/${date}?from=${base}`);
+    rates[base] = 1;
+    rates = Object.entries(rates);
+    return {
+      base,
+      date,
+      rates,
+    };
   };
 
   getCurrencies = async (): Promise<TCurrency[]> => {
     const result = await this.getResource("/currencies");
     return Object.entries(result);
+  };
+
+  getLatestByBaseRandom = async (base: string): Promise<TBaseAndRates> => {
+    const result = await this.getLatestByBase(base);
+    return {
+      rates: this.simulateUpdateCurrenciesRates(result.rates),
+      base: result.base,
+    };
   };
 
   // для имитации обновления курсов валют

@@ -1,33 +1,23 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import withCurrencyService from "../../components/hoc";
 
 import { TConverterReducer } from "../../reducers/converter-reducer/converter-reducer";
-import { TService } from "../../services/currency-service";
+import { TService } from "../../currency-service";
 
-import Converter from "../../components/Converter";
-import Spinner from "../../components/spinner";
+import Converter from "./Converter";
+import Spinner from "../spinner";
 
 import {
   TActionsConverterReducer,
   actionsConverterReducer,
 } from "../../reducers/converter-reducer/actions";
+import { AppStateType } from "../../store";
 
 type ConverterContainerProps = TConverterReducer &
   TActionsConverterReducer &
   TService;
 
 class ConverterContainer extends Component<ConverterContainerProps> {
-  setText = (text: string) => {
-    const { setConverterText } = this.props;
-    setConverterText(text);
-  };
-
-  setDate = (date: string) => {
-    const { setConverterDate } = this.props;
-    setConverterDate(date);
-  };
-
   getConvertPrice = () => {
     const { text, date, fetchPrice } = this.props;
     fetchPrice(text, date);
@@ -37,13 +27,13 @@ class ConverterContainer extends Component<ConverterContainerProps> {
     const {
       loading,
       price,
-      service,
       inputValid,
       date,
       error,
       text,
+      setConverterText,
+      setConverterDate,
     } = this.props;
-    const currentDate = service.getCurrentDate();
 
     let result: React.ReactElement;
     // let general: JSX.Element;
@@ -63,23 +53,20 @@ class ConverterContainer extends Component<ConverterContainerProps> {
     return (
       <Converter
         text={text}
-        result={result}
-        inputValid={!inputValid}
         date={date}
-        currentDate={currentDate}
+        inputValid={!inputValid}
+        result={result}
         getConvertPrice={this.getConvertPrice}
-        setText={this.setText}
-        setDate={this.setDate}
+        setConverterText={setConverterText}
+        setConverterDate={setConverterDate}
       />
     );
   }
 }
 
-const mapStateToProps = (state: any): TConverterReducer =>
+const mapStateToProps = (state: AppStateType): TConverterReducer =>
   state.converterReducer;
 
 const mapDispatchToProps: TActionsConverterReducer = actionsConverterReducer;
 
-export default withCurrencyService()(
-  connect(mapStateToProps, mapDispatchToProps)(ConverterContainer)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(ConverterContainer);

@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { TCurrencyReducer } from "../../reducers/currency-rates-reducer/currency-rates-reducer";
-import { TService } from "../../services/currency-service";
+import { TService } from "../../currency-service";
 
-import CurrencyRates from "../../components/CurrencyRates";
-import Spinner from "../../components/spinner";
+import CurrencySelection from "./CurrencySelection/CurrencySelection";
+import RateTable from "./RateTable/RateTable";
+import Spinner from "../spinner";
 
 import {
   actionsCurrencyRatesReducer,
   TActionsCurrencyRatesReducer,
 } from "../../reducers/currency-rates-reducer/actions";
+import { AppStateType } from "../../store";
 
 type CurrencyRatesContainerProps = TCurrencyReducer &
   TActionsCurrencyRatesReducer &
@@ -49,16 +51,20 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
     return (
-      <CurrencyRates
-        currencyRates={currencyRates}
-        base={base}
-        setBaseCurrency={this.setBaseCurrency}
-      />
+      <>
+        <CurrencySelection
+          base={base}
+          currencyRates={currencyRates}
+          setBaseCurrency={this.setBaseCurrency}
+        />
+
+        <RateTable base={base} currencyRates={currencyRates} />
+      </>
     );
   }
 }
 
-const mapStateToProps = (state: any): TCurrencyReducer =>
+const mapStateToProps = (state: AppStateType): TCurrencyReducer =>
   state.currencyRatesReducer;
 
 const mapDispatchToProps: TActionsCurrencyRatesReducer = actionsCurrencyRatesReducer;

@@ -1,28 +1,23 @@
-import { TRate } from "../../services/currency-service";
+import { TRate } from "../../currency-service";
 import {
   FETCH_RATES_REQUEST,
   FETCH_RATES_SUCCESS,
   FETCH_RATES_FUILURE,
 } from "./actions";
 
-export type TCurrencyReducer = {
-  base: string;
-  currencyRates: TRate[] | [];
-  error: Error | null;
-  loading: boolean;
+const initialState = {
+  base: localStorage.getItem("base") || "USD",
+  loading: true,
+  currencyRates: [] as TRate[] | [],
+  error: null as Error | null,
 };
 
-const currencyRatesReducer = (state: any, action: any): TCurrencyReducer => {
-  if (state === undefined) {
-    return {
-      ...state,
-      loading: true,
-      base: localStorage.getItem("base") || "USD",
-      currencyRates: [],
-      error: null,
-    };
-  }
+export type TCurrencyReducer = typeof initialState;
 
+const currencyRatesReducer = (
+  state = initialState,
+  action: any
+): TCurrencyReducer => {
   switch (action.type) {
     case FETCH_RATES_REQUEST:
       return {
@@ -35,8 +30,8 @@ const currencyRatesReducer = (state: any, action: any): TCurrencyReducer => {
       return {
         ...state,
         loading: false,
-        currencyRates: action.payload.rates,
         base: action.payload.base,
+        currencyRates: action.payload.rates,
       };
     case FETCH_RATES_FUILURE:
       return {

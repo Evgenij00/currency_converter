@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { TAvialableReducer } from "../../reducers/avialable-reducer/avialable-reducer";
-import { TService } from "../../services/currency-service";
+import { TService } from "../../currency-service";
 
-import AvialableCurrencies from "../../components/AvialableCurrencies";
-import Spinner from "../../components/spinner";
+import AvialableCurrencies from "./AvialableCurrencies";
+import Spinner from "../spinner";
 
 import {
   TActionsAvialableReducer,
   actionsAvialableReducer,
 } from "../../reducers/avialable-reducer/actions";
+import { AppStateType } from "../../store";
 
 type AvialableCurrenciesContainerProps = TAvialableReducer &
   TActionsAvialableReducer &
@@ -32,7 +33,7 @@ class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContaine
   }
 }
 
-const mapStateToProps = (state: any): TAvialableReducer =>
+const mapStateToProps = (state: AppStateType): TAvialableReducer =>
   state.avialableReducer;
 
 const mapDispatchToProps: TActionsAvialableReducer = actionsAvialableReducer;

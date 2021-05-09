@@ -9,10 +9,9 @@ type ConverterProps = {
   result: JSX.Element;
   inputValid: boolean;
   date: string;
-  currentDate: string;
   getConvertPrice: () => void;
-  setText: (text: string) => void;
-  setDate: (date: string) => void;
+  setConverterText: (text: string) => void;
+  setConverterDate: (date: string) => void;
 };
 
 const Converter: FC<ConverterProps> = (props) => {
@@ -21,26 +20,27 @@ const Converter: FC<ConverterProps> = (props) => {
     result,
     inputValid,
     date,
-    currentDate,
     getConvertPrice,
-    setText,
-    setDate,
+    setConverterText,
+    setConverterDate,
   } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setText(body);
+    setConverterText(body);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setDate(body);
+    setConverterDate(body);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     getConvertPrice();
   };
+
+  const currentDate = new Date().toLocaleDateString("en-CA");
 
   return (
     <>

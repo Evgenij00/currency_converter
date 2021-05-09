@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { TRate } from "../../../services/currency-service";
-import { renderTable } from "../../../utils";
+import { TRate } from "../../../currency-service";
+import TableItem from "./TableItem";
 
 type RateTableProps = {
   base: string;
@@ -9,7 +9,9 @@ type RateTableProps = {
 };
 
 const RateTable: React.FC<RateTableProps> = ({ base, currencyRates }) => {
-  const items = renderTable(base, currencyRates);
+  const items = currencyRates.map((item) => (
+    <TableItem key={item[0]} base={base} target={item[0]} price={item[1]} />
+  ));
   return (
     <Table striped bordered hover size="sm">
       <caption>Курсы в режиме реального времени</caption>

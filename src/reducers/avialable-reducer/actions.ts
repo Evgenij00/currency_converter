@@ -1,4 +1,4 @@
-import { service, TCurrency } from "../../services/currency-service";
+import { service, TCurrency } from "../../currency-service";
 
 export const FETCH_AVIALABLE_REQUEST = "FETCH_AVIALABLE_REQUEST";
 export const FETCH_AVIALABLE_SUCCESS = "FETCH_AVIALABLE_SUCCESS";

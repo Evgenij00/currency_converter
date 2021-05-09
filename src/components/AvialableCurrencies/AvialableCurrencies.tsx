@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { TCurrency } from "../../services/currency-service";
+import { TCurrency } from "../../currency-service";
+import AvialableCurrency from "./AvialableCurrency";
 
 type AvialableCurrenciesProps = {
   avialableCurrencies: TCurrency[];
@@ -9,18 +10,9 @@ type AvialableCurrenciesProps = {
 const AvialableCurrencies: React.FC<AvialableCurrenciesProps> = (props) => {
   const { avialableCurrencies } = props;
 
-  const renderTabels = (item: TCurrency): JSX.Element => {
-    return (
-      <tr key={item[0]}>
-        <td>{item[0]}</td>
-        <td>
-          <span>{item[1]}</span>
-        </td>
-      </tr>
-    );
-  };
-
-  const items = avialableCurrencies.map(renderTabels);
+  const items = avialableCurrencies.map((item) => (
+    <AvialableCurrency key={item[0]} name={item[0]} fullName={item[1]} />
+  ));
 
   return (
     <Table className="mt-3" striped bordered hover size="sm">

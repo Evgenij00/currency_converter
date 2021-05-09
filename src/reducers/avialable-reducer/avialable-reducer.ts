@@ -1,26 +1,22 @@
-import { TCurrency } from "../../services/currency-service";
+import { TCurrency } from "../../currency-service";
 import {
   FETCH_AVIALABLE_REQUEST,
   FETCH_AVIALABLE_SUCCESS,
   FETCH_AVIALABLE_FUILURE,
 } from "./actions";
 
-export type TAvialableReducer = {
-  avialableCurrencies: TCurrency[] | [];
-  loading: boolean;
-  error: Error | null;
+const initialState = {
+  loading: true,
+  avialableCurrencies: [] as TCurrency[] | [],
+  error: null as Error | null,
 };
 
-const avialableReducer = (state: any, action: any): TAvialableReducer => {
-  if (state === undefined) {
-    return {
-      ...state,
-      avialableCurrencies: [],
-      loading: true,
-      error: null,
-    };
-  }
+export type TAvialableReducer = typeof initialState;
 
+const avialableReducer = (
+  state = initialState,
+  action: any
+): TAvialableReducer => {
   switch (action.type) {
     case FETCH_AVIALABLE_REQUEST:
       return {
