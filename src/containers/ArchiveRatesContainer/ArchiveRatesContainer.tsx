@@ -4,7 +4,6 @@ import withCurrencyService from "../../components/hoc";
 
 import { TArchiveReducer } from "../../reducers/archive-reducer/archive-reducer";
 import { TService } from "../../services/currency-service";
-import { renderSelect, renderTable } from "../../utils";
 
 import {
   actionsArchiveReducer,
@@ -20,51 +19,24 @@ type ArchiveRatesContainerProps = TArchiveReducer &
 
 class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
   componentDidMount() {
-    const {
-      base,
-      date,
-      service,
-      archiveLoaded,
-      archiveError,
-      archiveRequested,
-    } = this.props;
-    archiveRequested();
-    service
-      .getArchiveByBase(base, date)
-      .then((rates) => archiveLoaded(rates))
-      .catch((error: Error) => archiveError(error));
+    const { base, date, fetchArvhiveRates } = this.props;
+    fetchArvhiveRates(base, date);
   }
 
-  handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setBaseCurrency = (base: string) => {
     const { setArchiveBase } = this.props;
-    const base = e.target.value;
     localStorage.setItem("base", base);
     setArchiveBase(base);
   };
 
-  handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setDate = (date: string) => {
     const { setArchiveDate } = this.props;
-    const date = e.target.value;
     setArchiveDate(date);
   };
 
-  handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const {
-      base,
-      date,
-      service,
-      archiveLoaded,
-      archiveError,
-      archiveRequested,
-    } = this.props;
-
-    archiveRequested();
-    service
-      .getArchiveByBase(base, date)
-      .then((rates) => archiveLoaded(rates))
-      .catch((error: Error) => archiveError(error));
+  getArchiveRates = () => {
+    const { base, date, fetchArvhiveRates } = this.props;
+    fetchArvhiveRates(base, date);
   };
 
   render() {
@@ -82,29 +54,23 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
     if (loading) return <Spinner />;
     if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    const options = renderSelect(arhiveRates);
-    const items = showTable ? renderTable(base, arhiveRates) : null;
-
     return (
       <ArchiveRates
         date={date}
         currentDate={currentDate}
         base={base}
-        items={items}
-        options={options}
-        handleFormSubmit={this.handleFormSubmit}
-        handleSelectChange={this.handleSelectChange}
-        handleDateChange={this.handleDateChange}
+        showTable={showTable}
+        arhiveRates={arhiveRates}
+        getArchiveRates={this.getArchiveRates}
+        setBaseCurrency={this.setBaseCurrency}
+        setDate={this.setDate}
       />
     );
   }
 }
 
-const mapStateToProps = ({
-  archiveReducer,
-}: {
-  archiveReducer: TArchiveReducer;
-}): TArchiveReducer => archiveReducer;
+const mapStateToProps = (state: any): TArchiveReducer => state.archiveReducer;
+
 const mapDispatchToProps: TActionsArchiveReducer = actionsArchiveReducer;
 
 export default withCurrencyService()(
