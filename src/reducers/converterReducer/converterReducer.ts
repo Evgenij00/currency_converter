@@ -2,8 +2,9 @@ import {
   FETCH_PRICE_REQUEST,
   FETCH_PRICE_SUCCESS,
   FETCH_PRICE_FUILURE,
-  SET_CONVERTER_TEXT,
-  SET_CONVERTER_DATE,
+  SET_TEXT,
+  SET_DATE,
+  TActions,
 } from "./actions";
 
 function isValid(text: string) {
@@ -20,12 +21,12 @@ const initialState = {
   error: null as Error | null,
 };
 
-export type TConverterReducer = typeof initialState;
+export type TStateConverterReducer = typeof initialState;
 
 const converterReducer = (
   state = initialState,
-  action: any
-): TConverterReducer => {
+  action: TActions
+): TStateConverterReducer => {
   switch (action.type) {
     case FETCH_PRICE_REQUEST:
       return {
@@ -48,14 +49,14 @@ const converterReducer = (
         error: action.payload,
         loading: false,
       };
-    case SET_CONVERTER_TEXT: {
+    case SET_TEXT: {
       return {
         ...state,
         text: action.payload,
         inputValid: isValid(action.payload),
       };
     }
-    case SET_CONVERTER_DATE:
+    case SET_DATE:
       return {
         ...state,
         date: action.payload,

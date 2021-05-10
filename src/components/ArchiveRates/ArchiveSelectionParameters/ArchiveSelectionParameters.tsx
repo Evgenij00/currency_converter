@@ -28,6 +28,7 @@ const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
   const options = arhiveRates.map((item) => (
     <SelectionItem key={item[0]} name={item[0]} />
   ));
+
   const currentDate = new Date().toLocaleDateString("en-CA");
 
   return (

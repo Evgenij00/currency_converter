@@ -1,40 +1,47 @@
+/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
+import { ThunkAction } from "redux-thunk";
 import { service, TCurrency } from "../../currency-service";
+import { TAppState } from "../../store";
 
 export const FETCH_AVIALABLE_REQUEST = "FETCH_AVIALABLE_REQUEST";
 export const FETCH_AVIALABLE_SUCCESS = "FETCH_AVIALABLE_SUCCESS";
 export const FETCH_AVIALABLE_FUILURE = "FETCH_AVIALABLE_FUILURE";
 
-type TFeatchAvialableRequest = {
+export type TActions = TActionRequest | TActionSuccess | TActionError;
+
+type TActionRequest = {
   type: typeof FETCH_AVIALABLE_REQUEST;
 };
 
-const avialableRequested = (): TFeatchAvialableRequest => ({
+const avialableRequested = (): TActionRequest => ({
   type: FETCH_AVIALABLE_REQUEST,
 });
 
-type TFetchAvialableSuccess = {
+type TActionSuccess = {
   type: typeof FETCH_AVIALABLE_SUCCESS;
   payload: TCurrency[];
 };
 
-const avialableLoaded = (currencies: TCurrency[]): TFetchAvialableSuccess => {
+const avialableLoaded = (currencies: TCurrency[]): TActionSuccess => {
   return {
     type: FETCH_AVIALABLE_SUCCESS,
     payload: currencies,
   };
 };
 
-type TFetchAvialableError = {
+type TActionError = {
   type: typeof FETCH_AVIALABLE_FUILURE;
   payload: Error;
 };
 
-const avialableError = (error: Error): TFetchAvialableError => ({
+const avialableError = (error: Error): TActionError => ({
   type: FETCH_AVIALABLE_FUILURE,
   payload: error,
 });
 
-const fetchCurrencies = () => (dispatch: any) => {
+type ThunkType = ThunkAction<void, TAppState, unknown, TActions>;
+
+const fetchCurrencies = (): ThunkType => (dispatch) => {
   dispatch(avialableRequested());
   service
     .getCurrencies()
@@ -42,10 +49,10 @@ const fetchCurrencies = () => (dispatch: any) => {
     .catch((error: Error) => dispatch(avialableError(error)));
 };
 
-export type TActionsAvialableReducer = {
-  fetchCurrencies: () => any;
+export type TCallbacksAvialableCurrenciesReducer = {
+  fetchCurrencies: () => void;
 };
 
-export const actionsAvialableReducer = {
+export const callbacksAvialableCurrenciesReducer = {
   fetchCurrencies,
 };

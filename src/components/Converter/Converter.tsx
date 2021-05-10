@@ -10,8 +10,8 @@ type ConverterProps = {
   inputValid: boolean;
   date: string;
   getConvertPrice: () => void;
-  setConverterText: (text: string) => void;
-  setConverterDate: (date: string) => void;
+  setText: (text: string) => void;
+  setDate: (date: string) => void;
 };
 
 const Converter: FC<ConverterProps> = (props) => {
@@ -21,18 +21,18 @@ const Converter: FC<ConverterProps> = (props) => {
     inputValid,
     date,
     getConvertPrice,
-    setConverterText,
-    setConverterDate,
+    setText,
+    setDate,
   } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setConverterText(body);
+    setText(body);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setConverterDate(body);
+    setDate(body);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,7 +74,7 @@ const Converter: FC<ConverterProps> = (props) => {
           type="submit"
           className="mr-2"
           variant="primary"
-          disabled={inputValid}
+          disabled={!inputValid}
         >
           Конвертировать
         </Button>

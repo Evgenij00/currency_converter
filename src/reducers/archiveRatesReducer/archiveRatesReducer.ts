@@ -3,6 +3,7 @@ import {
   FETCH_ARCHIVE_REQUEST,
   FETCH_ARCHIVE_SUCCESS,
   FETCH_ARCHIVE_FUILURE,
+  TActions,
 } from "./actions";
 
 const initialState = {
@@ -13,9 +14,12 @@ const initialState = {
   error: null as Error | null,
 };
 
-export type TArchiveReducer = typeof initialState;
+export type TStateReducer = typeof initialState;
 
-const archiveReducer = (state = initialState, action: any): TArchiveReducer => {
+const archiveReducer = (
+  state = initialState,
+  action: TActions
+): TStateReducer => {
   switch (action.type) {
     case FETCH_ARCHIVE_REQUEST:
       return {

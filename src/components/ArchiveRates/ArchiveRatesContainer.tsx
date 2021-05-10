@@ -1,38 +1,35 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 
-import { TArchiveReducer } from "../../reducers/archive-reducer/archive-reducer";
 import { TService } from "../../currency-service";
 
-import {
-  actionsArchiveReducer,
-  TActionsArchiveReducer,
-} from "../../reducers/archive-reducer/actions";
-
 import Spinner from "../spinner";
-import { AppStateType } from "../../store";
+import { TAppState } from "../../store";
 import ArchiveRateTable from "./ArchiveRateTable/ArchiveRateTable";
 import ArchiveSelectionParameters from "./ArchiveSelectionParameters/ArchiveSelectionParameters";
+import { TStateReducer } from "../../reducers/archiveRatesReducer/archiveRatesReducer";
+import {
+  callbacksReducer,
+  TCallbacksReducer,
+} from "../../reducers/archiveRatesReducer/actions";
 
-type ArchiveRatesContainerProps = TArchiveReducer &
-  TActionsArchiveReducer &
-  TService;
+type ArchiveRatesContainerProps = TStateReducer & TCallbacksReducer & TService;
 
 class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
   componentDidMount() {
     const { base, date, fetchArvhiveRates } = this.props;
-    fetchArvhiveRates(base, date);
+    fetchArvhiveRates(date, base);
   }
 
   setBaseCurrency = (base: string) => {
     localStorage.setItem("base", base);
     const { date, fetchArvhiveRates } = this.props;
-    fetchArvhiveRates(base, date);
+    fetchArvhiveRates(date, base);
   };
 
   setDate = (date: string) => {
     const { base, fetchArvhiveRates } = this.props;
-    fetchArvhiveRates(base, date);
+    fetchArvhiveRates(date, base);
   };
 
   render() {
@@ -56,10 +53,10 @@ class ArchiveRatesContainer extends Component<ArchiveRatesContainerProps> {
   }
 }
 
-const mapStateToProps = (state: AppStateType): TArchiveReducer =>
-  state.archiveReducer;
+const mapStateToProps = (state: TAppState): TStateReducer =>
+  state.archiveRatesReducer;
 
-const mapDispatchToProps: TActionsArchiveReducer = actionsArchiveReducer;
+const mapDispatchToProps: TCallbacksReducer = callbacksReducer;
 
 export default connect(
   mapStateToProps,

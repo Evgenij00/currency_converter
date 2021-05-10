@@ -1,20 +1,20 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 
-import { TConverterReducer } from "../../reducers/converter-reducer/converter-reducer";
 import { TService } from "../../currency-service";
 
 import Converter from "./Converter";
 import Spinner from "../spinner";
 
+import { TAppState } from "../../store";
+import { TStateConverterReducer } from "../../reducers/converterReducer/converterReducer";
 import {
-  TActionsConverterReducer,
-  actionsConverterReducer,
-} from "../../reducers/converter-reducer/actions";
-import { AppStateType } from "../../store";
+  callbacksConverterReducer,
+  TCallbacksConverterReducer,
+} from "../../reducers/converterReducer/actions";
 
-type ConverterContainerProps = TConverterReducer &
-  TActionsConverterReducer &
+type ConverterContainerProps = TStateConverterReducer &
+  TCallbacksConverterReducer &
   TService;
 
 class ConverterContainer extends Component<ConverterContainerProps> {
@@ -31,8 +31,8 @@ class ConverterContainer extends Component<ConverterContainerProps> {
       date,
       error,
       text,
-      setConverterText,
-      setConverterDate,
+      setText,
+      setDate,
     } = this.props;
 
     let result: React.ReactElement;
@@ -54,19 +54,19 @@ class ConverterContainer extends Component<ConverterContainerProps> {
       <Converter
         text={text}
         date={date}
-        inputValid={!inputValid}
         result={result}
+        inputValid={inputValid}
+        setText={setText}
+        setDate={setDate}
         getConvertPrice={this.getConvertPrice}
-        setConverterText={setConverterText}
-        setConverterDate={setConverterDate}
       />
     );
   }
 }
 
-const mapStateToProps = (state: AppStateType): TConverterReducer =>
+const mapStateToProps = (state: TAppState): TStateConverterReducer =>
   state.converterReducer;
 
-const mapDispatchToProps: TActionsConverterReducer = actionsConverterReducer;
+const mapDispatchToProps: TCallbacksConverterReducer = callbacksConverterReducer;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConverterContainer);

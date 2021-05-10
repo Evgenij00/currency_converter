@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { TAvialableReducer } from "../../reducers/avialable-reducer/avialable-reducer";
 import { TService } from "../../currency-service";
 
 import AvialableCurrencies from "./AvialableCurrencies";
 import Spinner from "../spinner";
 
+import { TAppState } from "../../store";
+import { TStateAvialableCurrenciesReducer } from "../../reducers/avialableCurrenciesReducer/avialableCurrenciesReducer";
 import {
-  TActionsAvialableReducer,
-  actionsAvialableReducer,
-} from "../../reducers/avialable-reducer/actions";
-import { AppStateType } from "../../store";
+  callbacksAvialableCurrenciesReducer,
+  TCallbacksAvialableCurrenciesReducer,
+} from "../../reducers/avialableCurrenciesReducer/actions";
 
-type AvialableCurrenciesContainerProps = TAvialableReducer &
-  TActionsAvialableReducer &
+type AvialableCurrenciesContainerProps = TStateAvialableCurrenciesReducer &
+  TCallbacksAvialableCurrenciesReducer &
   TService;
 
 class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContainerProps> {
@@ -33,10 +33,10 @@ class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContaine
   }
 }
 
-const mapStateToProps = (state: AppStateType): TAvialableReducer =>
-  state.avialableReducer;
+const mapStateToProps = (state: TAppState): TStateAvialableCurrenciesReducer =>
+  state.avialableCurrenciesReducer;
 
-const mapDispatchToProps: TActionsAvialableReducer = actionsAvialableReducer;
+const mapDispatchToProps: TCallbacksAvialableCurrenciesReducer = callbacksAvialableCurrenciesReducer;
 
 export default connect(
   mapStateToProps,

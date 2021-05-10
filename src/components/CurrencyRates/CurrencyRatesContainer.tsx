@@ -1,25 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { TCurrencyReducer } from "../../reducers/currency-rates-reducer/currency-rates-reducer";
-import { TService } from "../../currency-service";
+import { TStateCurrencyRatesReducer } from "../../reducers/currencyRatesReducer/currencyRatesReducer";
 
 import CurrencySelection from "./CurrencySelection/CurrencySelection";
 import RateTable from "./RateTable/RateTable";
 import Spinner from "../spinner";
 
 import {
-  actionsCurrencyRatesReducer,
-  TActionsCurrencyRatesReducer,
-} from "../../reducers/currency-rates-reducer/actions";
-import { AppStateType } from "../../store";
+  callbacksCurrencyRatesReducer,
+  TCallbacksCurrencyRatesReducer,
+} from "../../reducers/currencyRatesReducer/actions";
+import { TAppState } from "../../store";
 
-type CurrencyRatesContainerProps = TCurrencyReducer &
-  TActionsCurrencyRatesReducer &
-  TService;
+type CurrencyRatesContainerProps = TStateCurrencyRatesReducer &
+  TCallbacksCurrencyRatesReducer;
 
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
-  private idInterval: any;
+  private idInterval: number | undefined;
 
   private interval = 50000000;
 
@@ -39,9 +37,12 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
   };
 
   startTimer = (base: string) => {
-    const { fetchRates } = this.props;
-    fetchRates(base);
-    this.idInterval = setInterval(() => fetchRates(base), this.interval);
+    const { fetchLatestRates } = this.props;
+    fetchLatestRates(base);
+    this.idInterval = window.setInterval(
+      () => fetchLatestRates(base),
+      this.interval
+    );
   };
 
   render() {
@@ -64,10 +65,10 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
   }
 }
 
-const mapStateToProps = (state: AppStateType): TCurrencyReducer =>
+const mapStateToProps = (state: TAppState): TStateCurrencyRatesReducer =>
   state.currencyRatesReducer;
 
-const mapDispatchToProps: TActionsCurrencyRatesReducer = actionsCurrencyRatesReducer;
+const mapDispatchToProps: TCallbacksCurrencyRatesReducer = callbacksCurrencyRatesReducer;
 
 export default connect(
   mapStateToProps,

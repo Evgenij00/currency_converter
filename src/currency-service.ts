@@ -4,87 +4,86 @@ export type TService = {
   service: ICurrencyService;
 };
 
+export type TCurrency = [string, string];
+export type TRate = [string, number];
+
 export type TBaseAndRates = {
   base: string;
   rates: TRate[];
 };
 
-export type TFetchArchiveCurrencies = {
+export type TArchiveRates = {
   base: string;
   date: string;
   rates: TRate[];
 };
 
-export type TCurrency = [string, string];
-export type TRate = [string, number];
-
 export interface ICurrencyService {
-  getResource: (url: string) => Promise<any>;
-  getLatestByBase: (base: string) => Promise<TBaseAndRates>;
-  getLatestByBaseRandom: (base: string) => Promise<TBaseAndRates>;
+  getLatestRates: (from: string) => Promise<TBaseAndRates>;
+  getArchiveRates: (data: string, from: string) => Promise<TArchiveRates>;
   getConvertPrice: (
     base: string,
     target: string,
     amount: string,
     date: string
   ) => Promise<number>;
-  getArchiveByBase: (
-    base: string,
-    data: string
-  ) => Promise<TFetchArchiveCurrencies>;
   getCurrencies: () => Promise<TCurrency[]>;
+  getLatestByBaseRandom: (base: string) => Promise<TBaseAndRates>;
 }
 
 export default class CurrencyService implements ICurrencyService {
-  private apiBase = "https://api.frankfurter.app";
+  private instance = axios.create({
+    baseURL: "https://api.frankfurter.app",
+  });
 
-  getResource = async (url: string): Promise<any> => {
-    const result = await axios.get(`${this.apiBase}${url}`);
-    return result.data;
+  getLatestRates = async (from: string): Promise<TBaseAndRates> => {
+    const {
+      data: { rates, base },
+    } = await this.instance.get<TLatestRatesResponse>(`/latest?from=${from}`);
+
+    rates[base] = 1; // необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
+    return {
+      base,
+      rates: Object.entries(rates),
+    };
   };
 
-  getLatestByBase = async (base: string): Promise<TBaseAndRates> => {
-    const result = await this.getResource(`/latest?from=${base}`);
-    result.rates[base] = 1; // необходимо добавить базу в список валют, чтобы кооректно отработал селектор валют
+  getArchiveRates = async (
+    date: string,
+    from: string
+  ): Promise<TArchiveRates> => {
+    const {
+      data: { rates, base },
+    } = await this.instance.get<TLatestRatesResponse>(`/${date}?from=${from}`);
+    rates[base] = 1;
     return {
-      base: result.base,
-      rates: Object.entries(result.rates),
+      base,
+      date,
+      rates: Object.entries(rates),
     };
   };
 
   getConvertPrice = async (
-    base: string,
-    target: string,
+    from: string,
+    to: string,
     amount: string,
     date: string
   ): Promise<number> => {
-    const result = await this.getResource(
-      `/${date}?amount=${amount}&from=${base}&to=${target}`
+    const {
+      data: { rates },
+    } = await this.instance.get<TLatestRatesResponse>(
+      `/${date}?amount=${amount}&from=${from}&to=${to}`
     );
-    return result.rates[target];
-  };
-
-  getArchiveByBase = async (
-    base: string,
-    date: string
-  ): Promise<TFetchArchiveCurrencies> => {
-    let { rates } = await this.getResource(`/${date}?from=${base}`);
-    rates[base] = 1;
-    rates = Object.entries(rates);
-    return {
-      base,
-      date,
-      rates,
-    };
+    return rates[to];
   };
 
   getCurrencies = async (): Promise<TCurrency[]> => {
-    const result = await this.getResource("/currencies");
-    return Object.entries(result);
+    const { data } = await this.instance.get<TCurrencies>("/currencies");
+    return Object.entries(data);
   };
 
   getLatestByBaseRandom = async (base: string): Promise<TBaseAndRates> => {
-    const result = await this.getLatestByBase(base);
+    const result = await this.getLatestRates(base);
     return {
       rates: this.simulateUpdateCurrenciesRates(result.rates),
       base: result.base,
@@ -109,3 +108,18 @@ export default class CurrencyService implements ICurrencyService {
 }
 
 export const service = new CurrencyService();
+
+type TLatestRatesResponse = {
+  amount: number;
+  base: string;
+  date: string;
+  rates: TRates;
+};
+
+type TRates = {
+  [key: string]: number;
+};
+
+type TCurrencies = {
+  [key: string]: string;
+};

@@ -1,21 +1,22 @@
+/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
 import {
+  archiveRatesReducer,
+  avialableCurrenciesReducer,
   converterReducer,
   currencyRatesReducer,
-  archiveReducer,
-  avialableReducer,
 } from "./reducers";
 
 const rootReducer = combineReducers({
-  currencyRatesReducer,
+  archiveRatesReducer,
+  avialableCurrenciesReducer,
   converterReducer,
-  archiveReducer,
-  avialableReducer,
+  currencyRatesReducer,
 });
 
-type RootReducerType = typeof rootReducer;
-export type AppStateType = ReturnType<RootReducerType>;
+type TRootReducer = typeof rootReducer;
+export type TAppState = ReturnType<TRootReducer>;
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 

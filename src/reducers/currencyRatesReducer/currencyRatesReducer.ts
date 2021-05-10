@@ -1,5 +1,6 @@
 import { TRate } from "../../currency-service";
 import {
+  TActions,
   FETCH_RATES_REQUEST,
   FETCH_RATES_SUCCESS,
   FETCH_RATES_FUILURE,
@@ -12,12 +13,12 @@ const initialState = {
   error: null as Error | null,
 };
 
-export type TCurrencyReducer = typeof initialState;
+export type TStateCurrencyRatesReducer = typeof initialState;
 
 const currencyRatesReducer = (
   state = initialState,
-  action: any
-): TCurrencyReducer => {
+  action: TActions
+): TStateCurrencyRatesReducer => {
   switch (action.type) {
     case FETCH_RATES_REQUEST:
       return {

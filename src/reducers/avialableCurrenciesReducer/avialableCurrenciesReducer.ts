@@ -3,6 +3,7 @@ import {
   FETCH_AVIALABLE_REQUEST,
   FETCH_AVIALABLE_SUCCESS,
   FETCH_AVIALABLE_FUILURE,
+  TActions,
 } from "./actions";
 
 const initialState = {
@@ -11,12 +12,12 @@ const initialState = {
   error: null as Error | null,
 };
 
-export type TAvialableReducer = typeof initialState;
+export type TStateAvialableCurrenciesReducer = typeof initialState;
 
-const avialableReducer = (
+const avialableCurrenciesReducer = (
   state = initialState,
-  action: any
-): TAvialableReducer => {
+  action: TActions
+): TStateAvialableCurrenciesReducer => {
   switch (action.type) {
     case FETCH_AVIALABLE_REQUEST:
       return {
@@ -44,4 +45,4 @@ const avialableReducer = (
   }
 };
 
-export default avialableReducer;
+export default avialableCurrenciesReducer;

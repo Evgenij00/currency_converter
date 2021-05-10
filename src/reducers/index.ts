@@ -1,11 +1,11 @@
-import archiveReducer from "./archive-reducer";
-import avialableReducer from "./avialable-reducer";
-import converterReducer from "./converter-reducer";
-import currencyRatesReducer from "./currency-rates-reducer";
+import archiveRatesReducer from "./archiveRatesReducer";
+import avialableCurrenciesReducer from "./avialableCurrenciesReducer";
+import converterReducer from "./converterReducer";
+import currencyRatesReducer from "./currencyRatesReducer";
 
 export {
-  currencyRatesReducer,
+  archiveRatesReducer,
+  avialableCurrenciesReducer,
   converterReducer,
-  archiveReducer,
-  avialableReducer,
+  currencyRatesReducer,
 };
