@@ -41,12 +41,14 @@ const avialableError = (error: Error): TActionError => ({
 
 type ThunkType = ThunkAction<void, TAppState, unknown, TActions>;
 
-const fetchCurrencies = (): ThunkType => (dispatch) => {
+export const fetchCurrencies = (): ThunkType => async (dispatch) => {
   dispatch(avialableRequested());
-  service
-    .getCurrencies()
-    .then((currencies) => dispatch(avialableLoaded(currencies)))
-    .catch((error: Error) => dispatch(avialableError(error)));
+  try {
+    const currencies = await service.getCurrencies();
+    dispatch(avialableLoaded(currencies));
+  } catch (error) {
+    dispatch(avialableError(error));
+  }
 };
 
 export type TCallbacksAvialableCurrenciesReducer = {

@@ -42,14 +42,18 @@ export const ratesError = (error: Error): TActionError => ({
   payload: error,
 });
 
-type ThunkType = ThunkAction<void, TAppState, unknown, TActions>;
+type ThunkType = ThunkAction<Promise<void>, TAppState, unknown, TActions>;
 
-export const fetchLatestRates = (base: string): ThunkType => (dispatch) => {
+export const fetchLatestRates = (base: string): ThunkType => async (
+  dispatch
+) => {
   dispatch(ratesRequested());
-  service
-    .getLatestRates(base)
-    .then((data) => dispatch(ratesLoaded(data)))
-    .catch((error: Error) => dispatch(ratesError(error)));
+  try {
+    const rates = await service.getLatestRates(base);
+    dispatch(ratesLoaded(rates));
+  } catch (error) {
+    dispatch(ratesError(error));
+  }
 };
 
 export type TCallbacksCurrencyRatesReducer = {

@@ -41,14 +41,17 @@ const archiveError = (error: Error): TActionError => ({
 
 type ThunkType = ThunkAction<void, TAppState, unknown, TActions>;
 
-const fetchArvhiveRates = (base: string, date: string): ThunkType => (
-  dispatch
-) => {
+export const fetchArvhiveRates = (
+  base: string,
+  date: string
+): ThunkType => async (dispatch) => {
   dispatch(archiveRequested());
-  service
-    .getArchiveRates(base, date)
-    .then((data) => dispatch(archiveLoaded(data)))
-    .catch((error: Error) => dispatch(archiveError(error)));
+  try {
+    const data = await service.getArchiveRates(base, date);
+    dispatch(archiveLoaded(data));
+  } catch (error) {
+    dispatch(archiveError(error));
+  }
 };
 
 export type TCallbacksReducer = {

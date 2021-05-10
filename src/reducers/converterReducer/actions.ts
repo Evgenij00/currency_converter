@@ -76,14 +76,23 @@ type TFetchPriceThunk = TActionRequest | TActionSuccess | TActionError;
 
 type ThunkType = ThunkAction<void, TAppState, unknown, TFetchPriceThunk>;
 
-const fetchPrice = (text: string, date: string): ThunkType => (dispatch) => {
+export const fetchPrice = (text: string, date: string): ThunkType => async (
+  dispatch
+) => {
   const [quantity, fromName, , toName] = text.toUpperCase().split(" ");
 
   dispatch(priceRequest());
-  service
-    .getConvertPrice(fromName, toName, quantity, date)
-    .then((price) => dispatch(priceLoaded(price)))
-    .catch((error: Error) => dispatch(priceError(error)));
+  try {
+    const price = await service.getConvertPrice(
+      fromName,
+      toName,
+      quantity,
+      date
+    );
+    dispatch(priceLoaded(price));
+  } catch (error) {
+    dispatch(priceError(error));
+  }
 };
 
 export type TCallbacksConverterReducer = {
