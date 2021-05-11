@@ -16,9 +16,9 @@ const App: React.FC = () => {
       <Header />
       <Container fluid="sm">
         <Switch>
-          <Route path="/" exact component={CurrencyRatesContainer} />
-          <Route path="/convert" component={ConverterContainer} />
-          <Route path="/course-archive" component={ArchiveRatesContainer} />
+          <Route path="/" exact component={ConverterContainer} />
+          <Route path="/latest-rates" component={CurrencyRatesContainer} />
+          <Route path="/archive-rates" component={ArchiveRatesContainer} />
           <Route
             path="/available-currencies"
             component={AvialableCurrenciesContainer}
