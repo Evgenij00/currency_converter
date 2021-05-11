@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
 
 import { TStateConverterReducer } from "../../reducers/converterReducer/converterReducer";
 import {

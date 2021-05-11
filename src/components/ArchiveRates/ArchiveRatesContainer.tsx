@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
 import ArchiveRateTable from "./ArchiveRateTable/ArchiveRateTable";
 import ArchiveSelectionParameters from "./ArchiveSelectionParameters/ArchiveSelectionParameters";
 import { TStateArchiveRatesReducer } from "../../reducers/archiveRatesReducer/archiveRatesReducer";
@@ -13,7 +13,7 @@ import {
   getError,
   getLoading,
 } from "../../reducers/archiveRatesReducer/selectors";
-import Error from "../Error";
+import ErrorIndicator from "../ErrorIndicator";
 
 const ArchiveRatesContainer: React.FC<TStateArchiveRatesReducer> = () => {
   const base = useSelector(getBase);
@@ -38,7 +38,7 @@ const ArchiveRatesContainer: React.FC<TStateArchiveRatesReducer> = () => {
   };
 
   if (loading) return <Spinner />;
-  if (error) return <Error />;
+  if (error) return <ErrorIndicator />;
 
   return (
     <>

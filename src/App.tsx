@@ -7,6 +7,7 @@ import CurrencyRatesContainer from "./components/CurrencyRates";
 import ConverterContainer from "./components/Converter";
 import ArchiveRatesContainer from "./components/ArchiveRates";
 import AvialableCurrenciesContainer from "./components/AvialableCurrencies";
+import ErrorIndicator from "./components/ErrorIndicator";
 
 // import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             path="/available-currencies"
             component={AvialableCurrenciesContainer}
           />
+          <Route component={ErrorIndicator} />
         </Switch>
       </Container>
     </BrowserRouter>

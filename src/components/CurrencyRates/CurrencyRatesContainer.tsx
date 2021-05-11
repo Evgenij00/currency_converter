@@ -5,14 +5,14 @@ import { TStateCurrencyRatesReducer } from "../../reducers/currencyRatesReducer/
 
 import CurrencySelection from "./CurrencySelection/CurrencySelection";
 import RateTable from "./RateTable/RateTable";
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
 
 import {
   callbacksCurrencyRatesReducer,
   TCallbacksCurrencyRatesReducer,
 } from "../../reducers/currencyRatesReducer/actions";
 import { TAppState } from "../../store";
-import Error from "../Error";
+import ErrorIndicator from "../ErrorIndicator";
 
 type CurrencyRatesContainerProps = TStateCurrencyRatesReducer &
   TCallbacksCurrencyRatesReducer;
@@ -50,7 +50,7 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     const { base, loading, error, currencyRates } = this.props;
 
     if (loading) return <Spinner />;
-    if (error) return <Error />;
+    if (error) return <ErrorIndicator />;
 
     return (
       <>

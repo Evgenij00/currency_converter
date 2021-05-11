@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import AvialableCurrencies from "./AvialableCurrencies";
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
 
 import { TStateAvialableCurrenciesReducer } from "../../reducers/avialableCurrenciesReducer/avialableCurrenciesReducer";
 import { fetchCurrencies } from "../../reducers/avialableCurrenciesReducer/actions";
@@ -11,7 +11,7 @@ import {
   getError,
   getLoading,
 } from "../../reducers/avialableCurrenciesReducer/selectors";
-import Error from "../Error";
+import ErrorIndicator from "../ErrorIndicator";
 
 const AvialableCurrenciesContainer: React.FC<TStateAvialableCurrenciesReducer> = () => {
   const avialableCurrencies = useSelector(getAvialableCurrencies);
@@ -25,7 +25,7 @@ const AvialableCurrenciesContainer: React.FC<TStateAvialableCurrenciesReducer> =
   }, []);
 
   if (loading) return <Spinner />;
-  if (error) return <Error />;
+  if (error) return <ErrorIndicator />;
 
   return <AvialableCurrencies avialableCurrencies={avialableCurrencies} />;
 };
