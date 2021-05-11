@@ -54,7 +54,7 @@ const ConverterHooks: FC<ConverterProps> = (props) => {
               onChange={handleInputChange}
               placeholder="Введите текст..."
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-primary">
               Убедитесь, что вы правильно ввели данные (должны быть в формате
               ISO). Регистр не имеет значения. Пример: 10 usd in rub
             </Form.Text>
@@ -73,7 +73,7 @@ const ConverterHooks: FC<ConverterProps> = (props) => {
         <Button
           type="submit"
           className="mr-2"
-          variant="primary"
+          variant="success"
           disabled={!inputValid}
         >
           Конвертировать

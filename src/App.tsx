@@ -8,7 +8,7 @@ import ConverterContainer from "./components/Converter";
 import ArchiveRatesContainer from "./components/ArchiveRates";
 import AvialableCurrenciesContainer from "./components/AvialableCurrencies";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 const App: React.FC = () => {
   return (

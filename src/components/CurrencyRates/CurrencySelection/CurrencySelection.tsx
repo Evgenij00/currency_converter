@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Col, Form } from "react-bootstrap";
 import { TRate } from "../../../currency-service";
 import SelectionItem from "./SelectionItem";
 
@@ -22,17 +22,19 @@ const CurrencySelection: React.FC<CurrencySelectionProps> = (props) => {
   ));
   return (
     <Form className="mt-3">
-      <Form.Group controlId="exampleForm.SelectCustom">
-        <Form.Label>Выберите валюту</Form.Label>
-        <Form.Control
-          as="select"
-          value={base}
-          onChange={handleSelectChange}
-          custom
-        >
-          {options}
-        </Form.Control>
-      </Form.Group>
+      <Form.Row>
+        <Form.Group as={Col} md="4" controlId="exampleForm.SelectCustom">
+          <Form.Label>Выберите валюту</Form.Label>
+          <Form.Control
+            as="select"
+            value={base}
+            onChange={handleSelectChange}
+            custom
+          >
+            {options}
+          </Form.Control>
+        </Form.Group>
+      </Form.Row>
     </Form>
   );
 };

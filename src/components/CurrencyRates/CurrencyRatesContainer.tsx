@@ -12,6 +12,7 @@ import {
   TCallbacksCurrencyRatesReducer,
 } from "../../reducers/currencyRatesReducer/actions";
 import { TAppState } from "../../store";
+import Error from "../Error";
 
 type CurrencyRatesContainerProps = TStateCurrencyRatesReducer &
   TCallbacksCurrencyRatesReducer;
@@ -49,7 +50,7 @@ class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
     const { base, loading, error, currencyRates } = this.props;
 
     if (loading) return <Spinner />;
-    if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
+    if (error) return <Error />;
 
     return (
       <>

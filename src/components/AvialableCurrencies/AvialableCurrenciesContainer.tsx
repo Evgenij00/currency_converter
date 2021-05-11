@@ -11,6 +11,7 @@ import {
   getError,
   getLoading,
 } from "../../reducers/avialableCurrenciesReducer/selectors";
+import Error from "../Error";
 
 const AvialableCurrenciesContainer: React.FC<TStateAvialableCurrenciesReducer> = () => {
   const avialableCurrencies = useSelector(getAvialableCurrencies);
@@ -24,7 +25,7 @@ const AvialableCurrenciesContainer: React.FC<TStateAvialableCurrenciesReducer> =
   }, []);
 
   if (loading) return <Spinner />;
-  if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
+  if (error) return <Error />;
 
   return <AvialableCurrencies avialableCurrencies={avialableCurrencies} />;
 };

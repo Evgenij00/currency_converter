@@ -13,6 +13,7 @@ import {
   getError,
   getLoading,
 } from "../../reducers/archiveRatesReducer/selectors";
+import Error from "../Error";
 
 const ArchiveRatesContainer: React.FC<TStateArchiveRatesReducer> = () => {
   const base = useSelector(getBase);
@@ -37,7 +38,7 @@ const ArchiveRatesContainer: React.FC<TStateArchiveRatesReducer> = () => {
   };
 
   if (loading) return <Spinner />;
-  if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
+  if (error) return <Error />;
 
   return (
     <>

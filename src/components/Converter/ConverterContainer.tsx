@@ -47,7 +47,7 @@ const ConverterContainer: React.FC<TStateConverterReducer> = () => {
     result = <Spinner />;
   } else if (error) {
     result = (
-      <span>
+      <span className="text-danger">
         Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.
       </span>
     );
