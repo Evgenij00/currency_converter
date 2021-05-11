@@ -1,3 +1,4 @@
+/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
 import { TRate } from "../../currency-service";
 import {
   FETCH_ARCHIVE_REQUEST,
@@ -10,21 +11,21 @@ const initialState = {
   base: localStorage.getItem("base") || "USD",
   date: new Date().toLocaleDateString("en-CA"),
   loading: true,
-  arhiveRates: [] as TRate[] | [],
+  archiveRates: [] as TRate[] | [],
   error: null as Error | null,
 };
 
-export type TStateReducer = typeof initialState;
+export type TStateArchiveRatesReducer = typeof initialState;
 
 const archiveReducer = (
   state = initialState,
   action: TActions
-): TStateReducer => {
+): TStateArchiveRatesReducer => {
   switch (action.type) {
     case FETCH_ARCHIVE_REQUEST:
       return {
         ...state,
-        arhiveRates: [],
+        archiveRates: [],
         loading: true,
         error: null,
       };
@@ -33,14 +34,14 @@ const archiveReducer = (
         ...state,
         base: action.payload.base,
         date: action.payload.date,
-        arhiveRates: action.payload.rates,
+        archiveRates: action.payload.rates,
         loading: false,
         error: null,
       };
     case FETCH_ARCHIVE_FUILURE:
       return {
         ...state,
-        arhiveRates: [],
+        archiveRates: [],
         loading: false,
         error: action.payload,
       };

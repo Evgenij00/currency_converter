@@ -1,3 +1,4 @@
+/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
 import { TCurrency } from "../../currency-service";
 import {
   FETCH_AVIALABLE_REQUEST,

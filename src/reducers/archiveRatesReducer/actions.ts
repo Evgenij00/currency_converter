@@ -53,11 +53,3 @@ export const fetchArvhiveRates = (
     dispatch(archiveError(error));
   }
 };
-
-export type TCallbacksReducer = {
-  fetchArvhiveRates: (base: string, date: string) => void;
-};
-
-export const callbacksReducer = {
-  fetchArvhiveRates,
-};

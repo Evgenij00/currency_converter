@@ -10,29 +10,29 @@ type ConverterProps = {
   inputValid: boolean;
   date: string;
   getConvertPrice: () => void;
-  setText: (text: string) => void;
-  setDate: (date: string) => void;
+  changeText: (text: string) => void;
+  changeDate: (date: string) => void;
 };
 
-const Converter: FC<ConverterProps> = (props) => {
+const ConverterHooks: FC<ConverterProps> = (props) => {
   const {
     text,
     result,
     inputValid,
     date,
     getConvertPrice,
-    setText,
-    setDate,
+    changeText,
+    changeDate,
   } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setText(body);
+    changeText(body);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
-    setDate(body);
+    changeDate(body);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,4 +85,4 @@ const Converter: FC<ConverterProps> = (props) => {
   );
 };
 
-export default Converter;
+export default ConverterHooks;

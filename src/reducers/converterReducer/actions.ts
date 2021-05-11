@@ -53,7 +53,7 @@ type TActionForText = {
   payload: string;
 };
 
-const setText = (text: string): TActionForText => {
+export const setText = (text: string): TActionForText => {
   return {
     type: SET_TEXT,
     payload: text,
@@ -65,7 +65,7 @@ type TActionForDate = {
   payload: string;
 };
 
-const setDate = (date: string): TActionForDate => {
+export const setDate = (date: string): TActionForDate => {
   return {
     type: SET_DATE,
     payload: date,
@@ -93,16 +93,4 @@ export const fetchPrice = (text: string, date: string): ThunkType => async (
   } catch (error) {
     dispatch(priceError(error));
   }
-};
-
-export type TCallbacksConverterReducer = {
-  setText: (text: string) => TActionForText;
-  setDate: (date: string) => TActionForDate;
-  fetchPrice: (text: string, date: string) => void;
-};
-
-export const callbacksConverterReducer = {
-  setText,
-  setDate,
-  fetchPrice,
 };

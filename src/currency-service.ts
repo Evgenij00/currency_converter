@@ -31,7 +31,7 @@ export interface ICurrencyService {
   getLatestByBaseRandom: (base: string) => Promise<TBaseAndRates>;
 }
 
-export default class CurrencyService implements ICurrencyService {
+class CurrencyService implements ICurrencyService {
   private instance = axios.create({
     baseURL: "https://api.frankfurter.app",
   });

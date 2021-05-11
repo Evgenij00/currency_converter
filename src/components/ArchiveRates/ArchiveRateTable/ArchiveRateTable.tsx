@@ -4,14 +4,14 @@ import { TRate } from "../../../currency-service";
 import TableItem from "./TableItem";
 
 type ArchiveRateTableProps = {
-  arhiveRates: TRate[];
+  archiveRates: TRate[];
   base: string;
 };
 
 const ArchiveRateTable: React.FC<ArchiveRateTableProps> = (props) => {
-  const { base, arhiveRates } = props;
+  const { base, archiveRates } = props;
 
-  const items = arhiveRates.map((item) => (
+  const items = archiveRates.map((item) => (
     <TableItem key={item[0]} base={base} target={item[0]} price={item[1]} />
   ));
 

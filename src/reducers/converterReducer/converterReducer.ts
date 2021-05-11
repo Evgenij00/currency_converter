@@ -1,3 +1,4 @@
+/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
 import {
   FETCH_PRICE_REQUEST,
   FETCH_PRICE_SUCCESS,

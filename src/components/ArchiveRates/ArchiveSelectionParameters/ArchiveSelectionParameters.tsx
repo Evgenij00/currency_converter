@@ -6,7 +6,7 @@ import SelectionItem from "./SelectionItem";
 type ArchiveSelectionParametersProps = {
   date: string;
   base: string;
-  arhiveRates: TRate[];
+  archiveRates: TRate[];
   setBaseCurrency: (base: string) => void;
   setDate: (date: string) => void;
 };
@@ -14,7 +14,7 @@ type ArchiveSelectionParametersProps = {
 const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
   props
 ) => {
-  const { date, base, arhiveRates, setBaseCurrency, setDate } = props;
+  const { date, base, archiveRates, setBaseCurrency, setDate } = props;
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const body = e.target.value;
@@ -25,7 +25,7 @@ const ArchiveSelectionParameters: React.FC<ArchiveSelectionParametersProps> = (
     setDate(body);
   };
 
-  const options = arhiveRates.map((item) => (
+  const options = archiveRates.map((item) => (
     <SelectionItem key={item[0]} name={item[0]} />
   ));
 

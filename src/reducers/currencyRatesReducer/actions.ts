@@ -37,16 +37,14 @@ type TActionError = {
   payload: Error;
 };
 
-export const ratesError = (error: Error): TActionError => ({
+const ratesError = (error: Error): TActionError => ({
   type: FETCH_RATES_FUILURE,
   payload: error,
 });
 
 type ThunkType = ThunkAction<Promise<void>, TAppState, unknown, TActions>;
 
-export const fetchLatestRates = (base: string): ThunkType => async (
-  dispatch
-) => {
+const fetchLatestRates = (base: string): ThunkType => async (dispatch) => {
   dispatch(ratesRequested());
   try {
     const rates = await service.getLatestRates(base);

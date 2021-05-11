@@ -50,11 +50,3 @@ export const fetchCurrencies = (): ThunkType => async (dispatch) => {
     dispatch(avialableError(error));
   }
 };
-
-export type TCallbacksAvialableCurrenciesReducer = {
-  fetchCurrencies: () => void;
-};
-
-export const callbacksAvialableCurrenciesReducer = {
-  fetchCurrencies,
-};

@@ -19,7 +19,7 @@ type CurrencyRatesContainerProps = TStateCurrencyRatesReducer &
 class CurrencyRatesContainer extends Component<CurrencyRatesContainerProps> {
   private idInterval: number | undefined;
 
-  private interval = 50000000;
+  private interval = 100000000;
 
   componentDidMount() {
     const { base } = this.props;

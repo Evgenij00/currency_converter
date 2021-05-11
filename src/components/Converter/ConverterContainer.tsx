@@ -1,72 +1,71 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
-import { TService } from "../../currency-service";
-
-import Converter from "./Converter";
 import Spinner from "../spinner";
 
-import { TAppState } from "../../store";
 import { TStateConverterReducer } from "../../reducers/converterReducer/converterReducer";
 import {
-  callbacksConverterReducer,
-  TCallbacksConverterReducer,
+  fetchPrice,
+  setText,
+  setDate,
 } from "../../reducers/converterReducer/actions";
+import ConverterHooks from "./Converter";
+import {
+  getDate,
+  getError,
+  getInputValid,
+  getLoading,
+  getPrice,
+  getText,
+} from "../../reducers/converterReducer/selectors";
 
-type ConverterContainerProps = TStateConverterReducer &
-  TCallbacksConverterReducer &
-  TService;
+const ConverterContainer: React.FC<TStateConverterReducer> = () => {
+  const text = useSelector(getText);
+  const date = useSelector(getDate);
+  const price = useSelector(getPrice);
+  const error = useSelector(getError);
+  const loading = useSelector(getLoading);
+  const inputValid = useSelector(getInputValid);
 
-class ConverterContainer extends Component<ConverterContainerProps> {
-  getConvertPrice = () => {
-    const { text, date, fetchPrice } = this.props;
-    fetchPrice(text, date);
+  const dispatch = useDispatch();
+
+  const changeText = (value: string) => {
+    dispatch(setText(value));
   };
 
-  render() {
-    const {
-      loading,
-      price,
-      inputValid,
-      date,
-      error,
-      text,
-      setText,
-      setDate,
-    } = this.props;
+  const changeDate = (value: string) => {
+    dispatch(setDate(value));
+  };
 
-    let result: React.ReactElement;
-    // let general: JSX.Element;
+  const getConvertPrice = () => {
+    dispatch(fetchPrice(text, date));
+  };
 
-    if (loading) {
-      result = <Spinner />;
-    } else if (error) {
-      result = (
-        <span>
-          Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.
-        </span>
-      );
-    } else {
-      result = <span>{price}</span>;
-    }
+  let result: JSX.Element;
 
-    return (
-      <Converter
-        text={text}
-        date={date}
-        result={result}
-        inputValid={inputValid}
-        setText={setText}
-        setDate={setDate}
-        getConvertPrice={this.getConvertPrice}
-      />
+  if (loading) {
+    result = <Spinner />;
+  } else if (error) {
+    result = (
+      <span>
+        Упс! Что-то пошло не так... Возможно вы неверно указали одну из валют.
+      </span>
     );
+  } else {
+    result = <span>{price}</span>;
   }
-}
 
-const mapStateToProps = (state: TAppState): TStateConverterReducer =>
-  state.converterReducer;
+  return (
+    <ConverterHooks
+      text={text}
+      date={date}
+      result={result}
+      inputValid={inputValid}
+      changeText={changeText}
+      changeDate={changeDate}
+      getConvertPrice={getConvertPrice}
+    />
+  );
+};
 
-const mapDispatchToProps: TCallbacksConverterReducer = callbacksConverterReducer;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConverterContainer);
+export default ConverterContainer;

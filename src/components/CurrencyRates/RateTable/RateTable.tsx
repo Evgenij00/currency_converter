@@ -10,7 +10,7 @@ type RateTableProps = {
 
 const RateTable: React.FC<RateTableProps> = ({ base, currencyRates }) => {
   const items = currencyRates.map((item) => (
-    <TableItem key={item[0]} base={base} target={item[0]} price={item[1]} />
+    <TableItem key={item[0]} from={base} to={item[0]} price={item[1]} />
   ));
   return (
     <Table striped bordered hover size="sm">

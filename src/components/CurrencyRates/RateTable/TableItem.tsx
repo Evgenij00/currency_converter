@@ -1,16 +1,16 @@
 import React from "react";
 
 type TableItemProps = {
-  base: string;
-  target: string;
+  from: string;
+  to: string;
   price: number;
 };
 
-const TableItem: React.FC<TableItemProps> = ({ base, target, price }) => {
+const TableItem: React.FC<TableItemProps> = ({ from, to, price }) => {
   return (
     <tr>
       <td>
-        {base}/{target}
+        {from}/{to}
       </td>
       <td>{price}</td>
     </tr>

@@ -1,44 +1,32 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import { TService } from "../../currency-service";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import AvialableCurrencies from "./AvialableCurrencies";
 import Spinner from "../spinner";
 
-import { TAppState } from "../../store";
 import { TStateAvialableCurrenciesReducer } from "../../reducers/avialableCurrenciesReducer/avialableCurrenciesReducer";
+import { fetchCurrencies } from "../../reducers/avialableCurrenciesReducer/actions";
 import {
-  callbacksAvialableCurrenciesReducer,
-  TCallbacksAvialableCurrenciesReducer,
-} from "../../reducers/avialableCurrenciesReducer/actions";
+  getAvialableCurrencies,
+  getError,
+  getLoading,
+} from "../../reducers/avialableCurrenciesReducer/selectors";
 
-type AvialableCurrenciesContainerProps = TStateAvialableCurrenciesReducer &
-  TCallbacksAvialableCurrenciesReducer &
-  TService;
+const AvialableCurrenciesContainer: React.FC<TStateAvialableCurrenciesReducer> = () => {
+  const avialableCurrencies = useSelector(getAvialableCurrencies);
+  const loading = useSelector(getLoading);
+  const error = useSelector(getError);
 
-class AvialableCurrenciesContainer extends Component<AvialableCurrenciesContainerProps> {
-  componentDidMount() {
-    const { fetchCurrencies } = this.props;
-    fetchCurrencies();
-  }
+  const dispatch = useDispatch();
 
-  render() {
-    const { avialableCurrencies, loading, error } = this.props;
+  useEffect(() => {
+    dispatch(fetchCurrencies());
+  }, []);
 
-    if (loading) return <Spinner />;
-    if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
+  if (loading) return <Spinner />;
+  if (error) return <h1>Что-то пошло не так... Попробуйте в другой раз.</h1>;
 
-    return <AvialableCurrencies avialableCurrencies={avialableCurrencies} />;
-  }
-}
+  return <AvialableCurrencies avialableCurrencies={avialableCurrencies} />;
+};
 
-const mapStateToProps = (state: TAppState): TStateAvialableCurrenciesReducer =>
-  state.avialableCurrenciesReducer;
-
-const mapDispatchToProps: TCallbacksAvialableCurrenciesReducer = callbacksAvialableCurrenciesReducer;
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AvialableCurrenciesContainer);
+export default AvialableCurrenciesContainer;
